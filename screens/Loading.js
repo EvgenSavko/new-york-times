@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
+import { withRouter } from 'react-router-native'
 
-export default class Loading extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Loading</Text>
-        <ActivityIndicator size="large" />
-      </View>
-    )
-  }
+import { onAuthStateChanged } from '../lib/firebase'
+
+const Loading = ({ history }) => {
+  useEffect(() => {
+    console.log('userLoading', onAuthStateChanged())
+    onAuthStateChanged() ? history.push('/') : history.push('/login')
+  }, [])
+
+  return (
+    <View style={styles.container}>
+      <Text>Loading</Text>
+      <ActivityIndicator size="large" />
+    </View>
+  )
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -18,3 +25,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 })
+
+export default withRouter(Loading)

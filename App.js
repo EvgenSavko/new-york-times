@@ -8,6 +8,8 @@ import SignUp from './screens/SignUp'
 import Login from './screens/Login'
 import Main from './screens/Main'
 
+import './lib/firebase'
+
 function App() {
   return (
     <NativeRouter>
