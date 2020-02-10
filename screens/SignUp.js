@@ -1,37 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
+import { withRouter } from 'react-router-native'
 
-export default class SignUp extends React.Component {
-  state = { email: '', password: '', errorMessage: null }
+import { signUp } from '../lib/firebase'
+
+const SignUp = ({ history }) => {
+  const [state, setState] = useState({ email: '', password: '', errorMessage: null })
+
   handleSignUp = () => {
     // TODO: Firebase stuff...
-    console.log('handleSignUp')
+    signUp(state.email, state.password)
+      .then(() => history.push('/main'))
+      .catch(error => setState({ ...state, errorMessage: error.message }))
+    console.log('handleSignUp', state)
   }
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Sign Up</Text>
-        {this.state.errorMessage && <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>}
-        <TextInput
-          placeholder="Email"
-          autoCapitalize="none"
-          style={styles.textInput}
-          onChangeText={email => this.setState({ email })}
-          value={this.state.email}
-        />
-        <TextInput
-          secureTextEntry
-          placeholder="Password"
-          autoCapitalize="none"
-          style={styles.textInput}
-          onChangeText={password => this.setState({ password })}
-          value={this.state.password}
-        />
-        <Button title="Sign Up" onPress={this.handleSignUp} />
-        <Button title="Already have an account? Login" onPress={() => this.props.navigation.navigate('Login')} />
-      </View>
-    )
-  }
+
+  return (
+    <View style={styles.container}>
+      <Text>Sign Up</Text>
+      {state.errorMessage && <Text style={{ color: 'red' }}>{state.errorMessage}</Text>}
+      <TextInput
+        placeholder="Email"
+        autoCapitalize="none"
+        style={styles.textInput}
+        onChangeText={email => setState({ ...state, email })}
+        value={state.email}
+      />
+      <TextInput
+        secureTextEntry
+        placeholder="Password"
+        autoCapitalize="none"
+        style={styles.textInput}
+        onChangeText={password => setState({ ...state, password })}
+        value={state.password}
+      />
+      <Button title="Sign Up" onPress={handleSignUp} />
+      <Button title="Already have an account? Login" onPress={() => history.push('/login')} />
+    </View>
+  )
 }
 const styles = StyleSheet.create({
   container: {
@@ -48,3 +54,5 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
 })
+
+export default withRouter(SignUp)

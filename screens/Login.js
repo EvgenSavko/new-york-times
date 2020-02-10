@@ -2,11 +2,17 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
 import { withRouter } from 'react-router-native'
 
+import { signIn } from '../lib/firebase'
+
 const Login = ({ history }) => {
   const [state, setState] = useState({ email: '', password: '', errorMessage: null })
+
   const handleLogin = () => {
     // TODO: Firebase stuff...
-    console.log('handleLogin')
+    signIn(state.email, state.password)
+      .then(() => history.push('/main'))
+      .catch(error => setState({ ...state, errorMessage: error.message }))
+    console.log('handleLogin', state)
   }
 
   return (

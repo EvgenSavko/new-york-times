@@ -2,12 +2,18 @@ import React, { useEffect } from 'react'
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 import { withRouter } from 'react-router-native'
 
-import { onAuthStateChanged } from '../lib/firebase'
+// import { onAuthStateChanged } from '../lib/firebase'
+import app from 'firebase/app'
 
 const Loading = ({ history }) => {
   useEffect(() => {
-    console.log('userLoading', onAuthStateChanged())
-    onAuthStateChanged() ? history.push('/') : history.push('/login')
+    // console.log('userLoading', onAuthStateChanged())
+
+    app.auth().onAuthStateChanged(user => {
+      user ? history.push('/main') : history.push('/login')
+    })
+
+    // onAuthStateChanged() ? history.push('/') : history.push('/login')
   }, [])
 
   return (
