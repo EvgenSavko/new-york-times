@@ -6,13 +6,9 @@ import app from 'firebase/app'
 import { usersDB } from '../lib/firebase'
 import { api } from '../lib/api'
 
-const Main = ({ history }) => {
+const Read = ({ history }) => {
   const [state, setState] = useState({ currentUser: null })
   const [articles, setArticles] = useState([])
-
-  useEffect(() => {
-    api().then(data => setArticles(data.results))
-  }, [setArticles])
 
   useEffect(() => {
     const { currentUser } = app.auth()
@@ -53,8 +49,8 @@ const Main = ({ history }) => {
           <Button title="Log out" onPress={logOutHandler} />
         </View>
         <View style={styles.container}>
-          <Text>Hi {state.currentUser.email}!</Text>
-          <Button title="Articles that I have read!" onPress={() => history.push('/read')} />
+          <Text>My read articles!</Text>
+          <Button title="Back" onPress={() => history.push('/main')} />
         </View>
       </>
     )
@@ -78,4 +74,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default withRouter(Main)
+export default withRouter(Read)

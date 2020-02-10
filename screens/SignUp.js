@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
 import { withRouter } from 'react-router-native'
 
-import { signUp } from '../lib/firebase'
+import { signUp, usersDB } from '../lib/firebase'
 
 const SignUp = ({ history }) => {
   const [state, setState] = useState({ email: '', password: '', errorMessage: null })
@@ -10,9 +10,15 @@ const SignUp = ({ history }) => {
   handleSignUp = () => {
     // TODO: Firebase stuff...
     signUp(state.email, state.password)
-      .then(() => history.push('/main'))
+      .then(data => {
+        usersDB.doc(data.user.uid).set({
+          uid: data.user.uid,
+          email: state.email,
+          articles: [],
+        })
+        // history.push('/main')
+      })
       .catch(error => setState({ ...state, errorMessage: error.message }))
-    console.log('handleSignUp', state)
   }
 
   return (

@@ -7,6 +7,7 @@ import Loading from './screens/Loading'
 import SignUp from './screens/SignUp'
 import Login from './screens/Login'
 import Main from './screens/Main'
+import Read from './screens/Read'
 
 import './lib/firebase'
 
@@ -33,6 +34,7 @@ function App() {
         <Route path="/sign_up" component={SignUp} />
         <Route path="/login" component={Login} />
         <Route path="/main" component={Main} />
+        <Route path="/read" component={Read} />
       </>
     </NativeRouter>
   )
