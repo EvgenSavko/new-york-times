@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Platform, Image, Text, View, Button } from 'react-native'
+import { StyleSheet, Platform, Image, Text, View, Button, SafeAreaView, ScrollView, TouchableWithoutFeedback, Linking } from 'react-native'
 import { withRouter } from 'react-router-native'
 
 import app from 'firebase/app'
@@ -42,8 +42,12 @@ const Main = ({ history }) => {
       )
   }
 
-  // console.log('state.currentUser', state.currentUser)
+  const handlerPress = url => {
+    console.log('press', url)
+    Linking.openURL(url)
+  }
 
+  // console.log('state.currentUser', state.currentUser)
   console.log('articles', articles.length)
 
   return (
@@ -55,6 +59,29 @@ const Main = ({ history }) => {
         <View style={styles.container}>
           <Text>Hi {state.currentUser.email}!</Text>
           <Button title="Articles that I have read!" onPress={() => history.push('/read')} />
+          <SafeAreaView>
+            <ScrollView>
+              {articles.length > 0 &&
+                articles.map(item => (
+                  <TouchableWithoutFeedback onPress={() => handlerPress(item.url)}>
+                    <View style={styles.row}>
+                      <View style={{ width: '20%' }}>
+                        <Image
+                          style={{ flex: 1 }}
+                          source={{
+                            uri: item.multimedia[2].url,
+                          }}
+                        />
+                      </View>
+                      <View style={{ width: '80%', paddingLeft: 5 }}>
+                        <Text style={styles.title}>{item.title}</Text>
+                        <Text style={styles.abstract}>{item.abstract}</Text>
+                      </View>
+                    </View>
+                  </TouchableWithoutFeedback>
+                ))}
+            </ScrollView>
+          </SafeAreaView>
         </View>
       </>
     )
@@ -75,6 +102,20 @@ const styles = StyleSheet.create({
   a: {
     color: 'rgb(0, 0, 238)',
     fontSize: 15,
+  },
+  title: {
+    fontSize: 15,
+    fontWeight: '600',
+    marginBottom: 5,
+  },
+  row: {
+    marginBottom: 8,
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
+    backgroundColor: '#efefefa6',
+    flexDirection: 'row',
   },
 })
 
