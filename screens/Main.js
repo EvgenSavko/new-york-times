@@ -19,12 +19,12 @@ const Main = ({ history }) => {
     if (!currentUser) history.push('/login')
     setState({ currentUser })
 
-    if (currentUser) {
-      usersDB
-        .doc(currentUser.uid)
-        .get()
-        .then(user => console.log('user', user.data()))
-    }
+    // if (currentUser) {
+    //   usersDB
+    //     .doc(currentUser.uid)
+    //     .get()
+    //     .then(user => console.log('user', user.data()))
+    // }
   }, [])
 
   const logOutHandler = () => {
@@ -42,13 +42,37 @@ const Main = ({ history }) => {
       )
   }
 
-  const handlerPress = url => {
-    console.log('press', url)
-    Linking.openURL(url)
+  const handlerPress = ({ url, title, abstract, multimedia }) => {
+    const obj = { url, title, abstract, multimedia }
+    const docUser = usersDB.doc(state.currentUser.uid)
+    if (state.currentUser) {
+      let arr = []
+      docUser.get().then(user => {
+        arr = [...user.data().articles]
+        if (arr.length === 0) {
+          arr.push(obj)
+        } else {
+          if (getCoincidence(arr, obj)) arr.push(obj)
+        }
+
+        docUser
+          .update({
+            articles: arr,
+          })
+          .then(function() {
+            console.log('Updated')
+          })
+        Linking.openURL(url)
+      })
+    }
   }
 
+  const getCoincidence = (arr, obj) => {
+    let coincidence = true
+    arr.forEach(item => (item.url === obj.url && coincidence ? (coincidence = false) : console.log('')))
+    return coincidence
+  }
   // console.log('state.currentUser', state.currentUser)
-  console.log('articles', articles.length)
 
   return (
     state.currentUser && (
@@ -62,24 +86,27 @@ const Main = ({ history }) => {
           <SafeAreaView>
             <ScrollView>
               {articles.length > 0 &&
-                articles.map(item => (
-                  <TouchableWithoutFeedback onPress={() => handlerPress(item.url)}>
-                    <View style={styles.row}>
-                      <View style={{ width: '20%' }}>
-                        <Image
-                          style={{ flex: 1 }}
-                          source={{
-                            uri: item.multimedia[2].url,
-                          }}
-                        />
+                articles.map(item => {
+                  const { url, title, abstract, multimedia } = item
+                  return (
+                    <TouchableWithoutFeedback onPress={() => handlerPress({ url, title, abstract, multimedia: [null, null, multimedia[2].url] })}>
+                      <View style={styles.row}>
+                        <View style={{ width: '20%' }}>
+                          <Image
+                            style={{ flex: 1 }}
+                            source={{
+                              uri: multimedia[2].url,
+                            }}
+                          />
+                        </View>
+                        <View style={{ width: '80%', paddingLeft: 5 }}>
+                          <Text style={styles.title}>{title}</Text>
+                          <Text style={styles.abstract}>{abstract}</Text>
+                        </View>
                       </View>
-                      <View style={{ width: '80%', paddingLeft: 5 }}>
-                        <Text style={styles.title}>{item.title}</Text>
-                        <Text style={styles.abstract}>{item.abstract}</Text>
-                      </View>
-                    </View>
-                  </TouchableWithoutFeedback>
-                ))}
+                    </TouchableWithoutFeedback>
+                  )
+                })}
             </ScrollView>
           </SafeAreaView>
         </View>
