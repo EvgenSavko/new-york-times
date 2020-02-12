@@ -16,7 +16,7 @@ function App() {
     <NativeRouter>
       <>
         <View style={styles.nav}>
-          <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>
+          {/* <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>
             <Text>loading</Text>
           </Link>
           <Link to="/sign_up" underlayColor="#f0f4f7" style={styles.navItem}>
@@ -27,7 +27,7 @@ function App() {
           </Link>
           <Link to="/main" underlayColor="#f0f4f7" style={styles.navItem}>
             <Text>main</Text>
-          </Link>
+          </Link> */}
         </View>
 
         <Route exact path="/" component={Loading} />
