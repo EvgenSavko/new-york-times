@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Platform, Image, Text, View, Button } from 'react-native'
+import { StyleSheet, Platform, Image, Text, View, Button, Linking } from 'react-native'
 import { withRouter } from 'react-router-native'
+
+import ArticlesList from '../components/ArticlesList'
 
 import app from 'firebase/app'
 import { usersDB } from '../lib/firebase'
@@ -19,7 +21,7 @@ const Read = ({ history }) => {
       usersDB
         .doc(currentUser.uid)
         .get()
-        .then(user => console.log('user', user.data()))
+        .then(user => setArticles(user.data().articles))
     }
   }, [])
 
@@ -40,7 +42,7 @@ const Read = ({ history }) => {
 
   // console.log('state.currentUser', state.currentUser)
 
-  console.log('articles', articles.length)
+  console.log('articles', articles[1])
 
   return (
     state.currentUser && (
@@ -50,7 +52,11 @@ const Read = ({ history }) => {
         </View>
         <View style={styles.container}>
           <Text>My read articles!</Text>
-          <Button title="Back" onPress={() => history.push('/main')} />
+          <View style={{ flexDirection: 'row' }}>
+            <Button title="Top articles" style={{ borderColo: 'red' }} onPress={() => history.push('/main')} />
+            <Button title="Read articles " onPress={() => history.push('/read')} />
+          </View>
+          <ArticlesList read={true} articles={articles} onhandlerPress={({ url }) => Linking.openURL(url)} />
         </View>
       </>
     )

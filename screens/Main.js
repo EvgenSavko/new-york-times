@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Platform, Image, Text, View, Button, SafeAreaView, ScrollView, TouchableWithoutFeedback, Linking } from 'react-native'
 import { withRouter } from 'react-router-native'
 
+import ArticlesList from '../components/ArticlesList'
+
 import app from 'firebase/app'
 import { usersDB } from '../lib/firebase'
 import { api } from '../lib/api'
@@ -82,33 +84,11 @@ const Main = ({ history }) => {
         </View>
         <View style={styles.container}>
           <Text>Hi {state.currentUser.email}!</Text>
-          <Button title="Articles that I have read!" onPress={() => history.push('/read')} />
-          <SafeAreaView>
-            <ScrollView>
-              {articles.length > 0 &&
-                articles.map(item => {
-                  const { url, title, abstract, multimedia } = item
-                  return (
-                    <TouchableWithoutFeedback onPress={() => handlerPress({ url, title, abstract, multimedia: [null, null, multimedia[2].url] })}>
-                      <View style={styles.row}>
-                        <View style={{ width: '20%' }}>
-                          <Image
-                            style={{ flex: 1 }}
-                            source={{
-                              uri: multimedia[2].url,
-                            }}
-                          />
-                        </View>
-                        <View style={{ width: '80%', paddingLeft: 5 }}>
-                          <Text style={styles.title}>{title}</Text>
-                          <Text style={styles.abstract}>{abstract}</Text>
-                        </View>
-                      </View>
-                    </TouchableWithoutFeedback>
-                  )
-                })}
-            </ScrollView>
-          </SafeAreaView>
+          <View style={{ flexDirection: 'row' }}>
+            <Button title="Top articles" onPress={() => history.push('/main')} />
+            <Button title="Read articles " onPress={() => history.push('/read')} />
+          </View>
+          <ArticlesList articles={articles} onhandlerPress={handlerPress} />
         </View>
       </>
     )
