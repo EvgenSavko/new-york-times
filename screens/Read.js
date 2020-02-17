@@ -18,14 +18,30 @@ const Read = ({ history }) => {
     setState({ currentUser })
 
     if (currentUser) {
-      usersDB
-        .doc(currentUser.uid)
-        .get()
-        .then(user => setArticles(user.data().articles))
+      getArticlesUser(currentUser.uid)
+      // usersDB
+      //   .doc(currentUser.uid)
+      //   .get()
+      //   .then(user => setArticles(user.data().articles))
     }
   }, [])
 
-  return <ArticlesList read={true} articles={articles} onhandlerPress={({ url }) => Linking.openURL(url)} />
+  const handleDeleteArticle = url => {
+    usersDB
+      .doc(state.currentUser.uid)
+      .update({
+        articles: articles.filter(item => item.url !== url),
+      })
+      .then(() => getArticlesUser(state.currentUser.uid))
+  }
+
+  const getArticlesUser = uid => {
+    usersDB
+      .doc(uid)
+      .get()
+      .then(user => setArticles(user.data().articles))
+  }
+  return <ArticlesList read={true} articles={articles} onDelete={handleDeleteArticle} onhandlerPress={({ url }) => Linking.openURL(url)} />
 }
 
 export default withRouter(Read)

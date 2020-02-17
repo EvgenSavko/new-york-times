@@ -1,25 +1,19 @@
-import React, { useState, useCallback, useContext, useEffect } from 'react'
+import React, { useState, useCallback, useContext } from 'react'
 import { StyleSheet, Image, Text, View, RefreshControl, SafeAreaView, ScrollView, TouchableWithoutFeedback } from 'react-native'
+import Swipeout from 'react-native-swipeout'
 
 import Loader from './Loader'
 
 import AppContext from '../context/AppContext'
 
-function wait(timeout) {
-  return new Promise(resolve => {
-    setTimeout(resolve, timeout)
-  })
-}
-
-const ArticlesList = ({ articles, onhandlerPress, read }) => {
+const ArticlesList = ({ articles, onhandlerPress, read, onDelete }) => {
   const [refreshing, setRefreshing] = useState(false)
   const [show, setShow] = useState(true)
+  const [loadDelete, setLoadDelete] = useState(true)
   const valueContext = useContext(AppContext)
   const { onReguestArticles } = valueContext
 
-  useEffect(() => {
-    wait(2500).then(() => setShow(false))
-  }, [])
+  setTimeout(() => setShow(false), 2000)
 
   const onRefresh = useCallback(() => {
     if (!read) {
@@ -35,26 +29,45 @@ const ArticlesList = ({ articles, onhandlerPress, read }) => {
       <ScrollView contentContainerStyle={styles.scrollView} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         {articles.map(item => {
           const { url, title, abstract, multimedia } = item
+          const sw = read && {
+            autoClose: true,
+            right: [
+              {
+                text: 'Delete',
+                backgroundColor: 'red',
+                onPress: () => {
+                  setLoadDelete(url)
+                  onDelete(url)
+                },
+              },
+            ],
+          }
           return (
-            <TouchableWithoutFeedback
-              key={url}
-              onPress={() => onhandlerPress({ url, title, abstract, multimedia: [null, null, { url: multimedia[2].url }] })}
-            >
-              <View style={read ? { ...styles.row, ...styles.read } : styles.row}>
-                <View style={{ width: '20%' }}>
-                  <Image
-                    style={{ flex: 1 }}
-                    source={{
-                      uri: multimedia[2].url,
-                    }}
-                  />
-                </View>
-                <View style={{ width: '80%', paddingLeft: 5 }}>
-                  <Text style={styles.title}>{title}</Text>
-                  <Text style={styles.abstract}>{abstract}</Text>
-                </View>
-              </View>
-            </TouchableWithoutFeedback>
+            <>
+              <Swipeout {...sw} autoClose="true" backgroundColor="transparent">
+                <TouchableWithoutFeedback
+                  key={url}
+                  onPress={() => onhandlerPress({ url, title, abstract, multimedia: [null, null, { url: multimedia[2].url }] })}
+                >
+                  <View style={read ? { ...styles.row, ...styles.read } : styles.row}>
+                    {loadDelete === url && <Loader style={{ position: 'absolute', left: '48%', top: '40%' }} />}
+                    <View style={{ width: '23%' }}>
+                      <Image
+                        style={{ flex: 1 }}
+                        source={{
+                          uri: multimedia[2].url,
+                        }}
+                      />
+                    </View>
+                    <View style={{ width: '77%', paddingLeft: 5 }}>
+                      <Text style={styles.title}>{title}</Text>
+                      <Text style={styles.abstract}>{abstract}</Text>
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+              </Swipeout>
+              <View style={{ height: 5 }} />
+            </>
           )
         })}
       </ScrollView>
@@ -71,15 +84,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: '600',
-    marginBottom: 5,
-  },
-  row: {
-    marginBottom: 8,
     paddingTop: 5,
     paddingBottom: 5,
+  },
+  row: {
+    marginBottom: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
     paddingLeft: 5,
     paddingRight: 5,
-    backgroundColor: '#efefefa6',
+    backgroundColor: '#e9e9e936',
     flexDirection: 'row',
   },
   read: {

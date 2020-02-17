@@ -58,7 +58,7 @@ const Main = ({ history }) => {
 
   console.log('articles', articles.length)
 
-  return <ArticlesList articles={articles} onhandlerPress={handlerPress} />
+  return <ArticlesList articles={articles} onDelete={() => console.log('test')} onhandlerPress={handlerPress} />
 }
 
 export default withRouter(Main)
