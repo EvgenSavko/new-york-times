@@ -26,21 +26,6 @@ const Main = ({ history }) => {
     setState({ currentUser })
   }, [])
 
-  const logOutHandler = () => {
-    app
-      .auth()
-      .signOut()
-      .then(
-        () => {
-          console.log('Signed Out')
-          history.push('/login')
-        },
-        error => {
-          console.error('Sign Out Error', error)
-        }
-      )
-  }
-
   const handlerPress = ({ url, title, abstract, multimedia }) => {
     const obj = { url, title, abstract, multimedia }
     const docUser = usersDB.doc(state.currentUser.uid)
@@ -77,14 +62,11 @@ const Main = ({ history }) => {
   return (
     state.currentUser && (
       <>
-        <View style={styles.header}>
-          <Button title="Log out" onPress={logOutHandler} />
-        </View>
         <View style={styles.container}>
           <Text>Hi {state.currentUser.email}!</Text>
           <View style={{ flexDirection: 'row' }}>
-            <Button title="Top articles" onPress={() => history.push('/main')} />
-            <Button title="Read articles " onPress={() => history.push('/read')} />
+            <Button title="Top articles" onPress={() => history.push('/main/home')} />
+            <Button title="Read articles " onPress={() => history.push('/main/read')} />
           </View>
           <ArticlesList articles={articles} onhandlerPress={handlerPress} />
         </View>
@@ -94,12 +76,6 @@ const Main = ({ history }) => {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
-    // borderWidth: 2,
-    // borderColor: 'blue',
-  },
   container: {
     flex: 1,
     justifyContent: 'flex-start',

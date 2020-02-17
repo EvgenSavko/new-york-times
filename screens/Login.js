@@ -10,7 +10,7 @@ const Login = ({ history }) => {
   const handleLogin = () => {
     // TODO: Firebase stuff...
     signIn(state.email, state.password)
-      .then(() => history.push('/main'))
+      .then(() => history.push('/main/home'))
       .catch(error => setState({ ...state, errorMessage: error.message }))
     console.log('handleLogin', state)
   }

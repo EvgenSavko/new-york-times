@@ -25,21 +25,6 @@ const Read = ({ history }) => {
     }
   }, [])
 
-  const logOutHandler = () => {
-    app
-      .auth()
-      .signOut()
-      .then(
-        () => {
-          console.log('Signed Out')
-          history.push('/login')
-        },
-        error => {
-          console.error('Sign Out Error', error)
-        }
-      )
-  }
-
   // console.log('state.currentUser', state.currentUser)
 
   console.log('articles', articles[1])
@@ -47,14 +32,11 @@ const Read = ({ history }) => {
   return (
     state.currentUser && (
       <>
-        <View style={styles.header}>
-          <Button title="Log out" onPress={logOutHandler} />
-        </View>
         <View style={styles.container}>
           <Text>My read articles!</Text>
           <View style={{ flexDirection: 'row' }}>
-            <Button title="Top articles" style={{ borderColo: 'red' }} onPress={() => history.push('/main')} />
-            <Button title="Read articles " onPress={() => history.push('/read')} />
+            <Button title="Top articles" style={{ borderColo: 'red' }} onPress={() => history.push('/main/home')} />
+            <Button title="Read articles " onPress={() => history.push('/main/read')} />
           </View>
           <ArticlesList read={true} articles={articles} onhandlerPress={({ url }) => Linking.openURL(url)} />
         </View>
@@ -63,12 +45,6 @@ const Read = ({ history }) => {
   )
 }
 const styles = StyleSheet.create({
-  header: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
-    // borderWidth: 2,
-    // borderColor: 'blue',
-  },
   container: {
     flex: 1,
     justifyContent: 'flex-start',

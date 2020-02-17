@@ -16,7 +16,7 @@ const SignUp = ({ history }) => {
           email: state.email,
           articles: [],
         })
-        // history.push('/main')
+        history.push('/main/home')
       })
       .catch(error => setState({ ...state, errorMessage: error.message }))
   }

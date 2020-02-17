@@ -10,7 +10,7 @@ const Loading = ({ history }) => {
     // console.log('userLoading', onAuthStateChanged())
 
     app.auth().onAuthStateChanged(user => {
-      user ? history.push('/main') : history.push('/login')
+      user ? history.push('/main/home') : history.push('/login')
     })
 
     // onAuthStateChanged() ? history.push('/') : history.push('/login')
