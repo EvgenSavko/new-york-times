@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { StyleSheet, Text, View, Button, Linking } from 'react-native'
+import { Linking } from 'react-native'
 import { withRouter } from 'react-router-native'
 
 import ArticlesList from '../components/ArticlesList'
@@ -9,7 +9,6 @@ import app from 'firebase/app'
 import AppContext from '../context/AppContext'
 
 import { usersDB } from '../lib/firebase'
-// import { api } from '../lib/api'
 
 const Main = ({ history }) => {
   const [state, setState] = useState({ currentUser: null })
@@ -59,46 +58,7 @@ const Main = ({ history }) => {
 
   console.log('articles', articles.length)
 
-  return (
-    state.currentUser && (
-      <>
-        <View style={styles.container}>
-          <Text>Hi {state.currentUser.email}!</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <Button title="Top articles" onPress={() => history.push('/main/home')} />
-            <Button title="Read articles " onPress={() => history.push('/main/read')} />
-          </View>
-          <ArticlesList articles={articles} onhandlerPress={handlerPress} />
-        </View>
-      </>
-    )
-  )
+  return <ArticlesList articles={articles} onhandlerPress={handlerPress} />
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  a: {
-    color: 'rgb(0, 0, 238)',
-    fontSize: 15,
-  },
-  title: {
-    fontSize: 15,
-    fontWeight: '600',
-    marginBottom: 5,
-  },
-  row: {
-    marginBottom: 8,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
-    backgroundColor: '#efefefa6',
-    flexDirection: 'row',
-  },
-})
 
 export default withRouter(Main)

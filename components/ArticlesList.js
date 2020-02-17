@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useContext } from 'react'
+import React, { useState, useCallback, useContext, useEffect } from 'react'
 import { StyleSheet, Image, Text, View, RefreshControl, SafeAreaView, ScrollView, TouchableWithoutFeedback } from 'react-native'
 
-import Loader from '../components/Loader'
+import Loader from './Loader'
 
 import AppContext from '../context/AppContext'
 
@@ -13,8 +13,13 @@ function wait(timeout) {
 
 const ArticlesList = ({ articles, onhandlerPress, read }) => {
   const [refreshing, setRefreshing] = useState(false)
+  const [show, setShow] = useState(true)
   const valueContext = useContext(AppContext)
   const { onReguestArticles } = valueContext
+
+  useEffect(() => {
+    wait(2500).then(() => setShow(false))
+  }, [])
 
   const onRefresh = useCallback(() => {
     if (!read) {
@@ -54,8 +59,12 @@ const ArticlesList = ({ articles, onhandlerPress, read }) => {
         })}
       </ScrollView>
     </SafeAreaView>
-  ) : (
+  ) : show ? (
     <Loader />
+  ) : (
+    <View style={[styles.container, styles.horizontal]}>
+      <Text style={styles.title}> You did not read any article </Text>
+    </View>
   )
 }
 const styles = StyleSheet.create({
@@ -76,6 +85,15 @@ const styles = StyleSheet.create({
   read: {
     borderWidth: 2,
     borderColor: '#dde4ff',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
   },
 })
 
