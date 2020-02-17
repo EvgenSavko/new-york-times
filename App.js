@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View, Button } from 'react-native'
 
 import { NativeRouter, Route, Link } from 'react-router-native'
 
@@ -9,14 +9,22 @@ import Login from './screens/Login'
 import Main from './screens/Main'
 import Read from './screens/Read'
 
+import { AppProvider } from './context/AppContext'
+
+import { api } from './lib/api'
 import './lib/firebase'
 
 function App() {
+  const [articles, setArticles] = useState([])
+
+  const onReguestArticles = () => api().then(data => setArticles(data.results))
+
   return (
     <NativeRouter>
-      <>
-        <View style={styles.nav}>
-          {/* <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>
+      <AppProvider value={{ articles, onReguestArticles }}>
+        <>
+          <View style={styles.nav}>
+            {/* <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>
             <Text>loading</Text>
           </Link>
           <Link to="/sign_up" underlayColor="#f0f4f7" style={styles.navItem}>
@@ -28,14 +36,14 @@ function App() {
           <Link to="/main" underlayColor="#f0f4f7" style={styles.navItem}>
             <Text>main</Text>
           </Link> */}
-        </View>
-
-        <Route exact path="/" component={Loading} />
-        <Route path="/sign_up" component={SignUp} />
-        <Route path="/login" component={Login} />
-        <Route path="/main" component={Main} />
-        <Route path="/read" component={Read} />
-      </>
+          </View>
+          <Route exact path="/" component={Loading} />
+          <Route path="/sign_up" component={SignUp} />
+          <Route path="/login" component={Login} />
+          <Route path="/main" component={Main} />
+          <Route path="/read" component={Read} />
+        </>
+      </AppProvider>
     </NativeRouter>
   )
 }
