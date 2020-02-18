@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useContext } from 'react'
-import { StyleSheet, Image, Text, View, RefreshControl, SafeAreaView, ScrollView, TouchableWithoutFeedback } from 'react-native'
-import Swipeout from 'react-native-swipeout'
+import { StyleSheet, Image, Text, View, RefreshControl, Dimensions, SafeAreaView, ScrollView, TouchableWithoutFeedback } from 'react-native'
+
+import Swipeable from 'react-native-swipeable'
 
 import Loader from './Loader'
 
@@ -12,6 +13,7 @@ const ArticlesList = ({ articles, onhandlerPress, read, onDelete }) => {
   const [loadDelete, setLoadDelete] = useState(true)
   const valueContext = useContext(AppContext)
   const { onReguestArticles } = valueContext
+  const { height, width } = Dimensions.get('screen')
 
   setTimeout(() => setShow(false), 2000)
 
@@ -26,50 +28,56 @@ const ArticlesList = ({ articles, onhandlerPress, read, onDelete }) => {
 
   return articles.length > 0 ? (
     <SafeAreaView>
-      <ScrollView contentContainerStyle={styles.scrollView} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-        {articles.map(item => {
-          const { url, title, abstract, multimedia } = item
-          const sw = read && {
-            autoClose: true,
-            right: [
-              {
-                text: 'Delete',
-                backgroundColor: 'red',
-                onPress: () => {
+      <ScrollView
+        // horizontal
+        // pagingEnabled
+        contentContainerStyle={styles.scrollView}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
+        <View>
+          {articles.map(item => {
+            const { url, title, abstract, multimedia } = item
+            const rightButtons = read && [
+              <TouchableWithoutFeedback
+                onPress={() => {
                   setLoadDelete(url)
                   onDelete(url)
-                },
-              },
-            ],
-          }
-          return (
-            <>
-              <Swipeout {...sw} autoClose="true" backgroundColor="transparent">
-                <TouchableWithoutFeedback
-                  key={url}
-                  onPress={() => onhandlerPress({ url, title, abstract, multimedia: [null, null, { url: multimedia[2].url }] })}
-                >
-                  <View style={read ? { ...styles.row, ...styles.read } : styles.row}>
-                    {loadDelete === url && <Loader style={{ position: 'absolute', left: '48%', top: '40%' }} />}
-                    <View style={{ width: '23%' }}>
-                      <Image
-                        style={{ flex: 1 }}
-                        source={{
-                          uri: multimedia[2].url,
-                        }}
-                      />
-                    </View>
-                    <View style={{ width: '77%', paddingLeft: 5 }}>
-                      <Text style={styles.title}>{title}</Text>
-                      <Text style={styles.abstract}>{abstract}</Text>
-                    </View>
-                  </View>
-                </TouchableWithoutFeedback>
-              </Swipeout>
-              <View style={{ height: 5 }} />
-            </>
-          )
-        })}
+                }}
+              >
+                <Text>Delete</Text>
+              </TouchableWithoutFeedback>,
+            ]
+            return (
+              <>
+                <View style={{ width }}>
+                  <Swipeable rightButtons={rightButtons}>
+                    <TouchableWithoutFeedback
+                      key={url}
+                      onPress={() => onhandlerPress({ url, title, abstract, multimedia: [null, null, { url: multimedia[2].url }] })}
+                    >
+                      <View style={read ? { ...styles.row, ...styles.read } : styles.row}>
+                        {loadDelete === url && <Loader style={{ position: 'absolute', left: '48%', top: '40%' }} />}
+                        <View style={{ width: (width / 100) * 23 }}>
+                          <Image
+                            style={{ flex: 1 }}
+                            source={{
+                              uri: multimedia[2].url,
+                            }}
+                          />
+                        </View>
+                        <View style={{ width: (width / 100) * 77, paddingLeft: 5 }}>
+                          <Text style={styles.title}>{title}</Text>
+                          <Text style={styles.abstract}>{abstract}</Text>
+                        </View>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  </Swipeable>
+                  <View style={{ height: 5 }} />
+                </View>
+              </>
+            )
+          })}
+        </View>
       </ScrollView>
     </SafeAreaView>
   ) : show ? (
