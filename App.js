@@ -6,8 +6,6 @@ import { NativeRouter, Route, Link } from 'react-router-native'
 import Loading from './screens/Loading'
 import SignUp from './screens/SignUp'
 import Login from './screens/Login'
-import Main from './screens/Main'
-import Read from './screens/Read'
 import Home from './screens/Home'
 
 import { AppProvider } from './context/AppContext'
@@ -15,7 +13,7 @@ import { AppProvider } from './context/AppContext'
 import { api } from './lib/api'
 import './lib/firebase'
 
-import app from 'firebase/app'
+// import app from 'firebase/app'
 
 function App() {
   const [articles, setArticles] = useState([])

@@ -19,10 +19,6 @@ const Read = ({ history }) => {
 
     if (currentUser) {
       getArticlesUser(currentUser.uid)
-      // usersDB
-      //   .doc(currentUser.uid)
-      //   .get()
-      //   .then(user => setArticles(user.data().articles))
     }
   }, [])
 
