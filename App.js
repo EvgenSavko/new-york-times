@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, View } from 'react-native'
 
-import { NativeRouter, Route, Link } from 'react-router-native'
+import { NativeRouter, Route } from 'react-router-native'
 
 import Loading from './screens/Loading'
 import SignUp from './screens/SignUp'
