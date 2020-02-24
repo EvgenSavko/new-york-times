@@ -15,7 +15,7 @@ import './lib/firebase'
 
 // import app from 'firebase/app'
 
-function App() {
+const App: React.FC = () => {
   const [articles, setArticles] = useState([])
 
   const onReguestArticles = () => api().then(data => setArticles(data.results))

@@ -30,7 +30,7 @@ const ArticlesItem = ({ article, onhandlerPress, read, onDelete }) => {
   }
 
   return (
-    <View style={{ width }} key={url}>
+    <View style={{ width }}>
       <Swipeable ref={swipeable} rightButtons={rightButtons} onSwipeStart={() => setTimeout(() => swipeable && swipeable.current.recenter(), 1000)}>
         <TouchableWithoutFeedback onPress={() => onhandlerPress({ url, title, abstract, multimedia: [null, null, { url: multimedia[2].url }] })}>
           <View style={read ? { ...styles.row, ...styles.read } : styles.row}>

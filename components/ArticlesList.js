@@ -29,7 +29,7 @@ const ArticlesList = props => {
       <ScrollView contentContainerStyle={styles.scrollView} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         <View>
           {articles.map(item => {
-            return <ArticleItem article={item} {...props} />
+            return <ArticleItem article={item} key={item.url} {...props} />
           })}
         </View>
       </ScrollView>
