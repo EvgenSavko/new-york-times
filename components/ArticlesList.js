@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from 'react'
+import React, { useEffect, useState, useCallback, useContext } from 'react'
 import { StyleSheet, Image, Text, View, RefreshControl, SafeAreaView, ScrollView } from 'react-native'
 
 import Loader from './Loader'
@@ -13,7 +13,11 @@ const ArticlesList = props => {
   const valueContext = useContext(AppContext)
   const { onReguestArticles } = valueContext
 
-  setTimeout(() => setShow(false), 2000)
+  useEffect(() => {
+    return () => {
+      setTimeout(() => setShow(false), 2000)
+    }
+  })
 
   const onRefresh = useCallback(() => {
     if (!read) {

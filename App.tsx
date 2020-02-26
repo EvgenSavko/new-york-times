@@ -21,7 +21,6 @@ const App: React.FC = () => {
   const onReguestArticles = () => api().then(data => setArticles(data.results))
 
   // app.auth().signOut()
-
   return (
     <NativeRouter>
       <AppProvider value={{ articles, onReguestArticles }}>
