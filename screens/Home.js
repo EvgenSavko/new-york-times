@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Button, Text } from 'react-native'
+import { Content, Icon, Picker, Form } from 'native-base'
 
 import { withRouter, Route } from 'react-router-native'
 
@@ -10,6 +11,7 @@ import app from 'firebase/app'
 
 function Home({ history }) {
   const [state, setState] = useState({ currentUser: null })
+  const [selected, setSelected] = useState('key0')
 
   useEffect(() => {
     const { currentUser } = app.auth()
@@ -31,6 +33,11 @@ function Home({ history }) {
         }
       )
   }
+
+  const onValueChange = value => {
+    setSelected(value)
+  }
+
   console.log(history.location.pathname)
   return (
     <>
@@ -39,6 +46,25 @@ function Home({ history }) {
       </View>
       {state.currentUser && (
         <View style={styles.container}>
+          <View style={styles.select}>
+            <Text>Select category: </Text>
+            <Form>
+              <Picker
+                mode="dropdown"
+                placeholder="Select One"
+                placeholderStyle={{ color: '#2874F0' }}
+                note={false}
+                selectedValue={selected}
+                onValueChange={onValueChange}
+              >
+                <Picker.Item label="Arts" value="key0" />
+                <Picker.Item label="Home" value="key1" />
+                <Picker.Item label="Science" value="key2" />
+                <Picker.Item label="Us" value="key3" />
+                <Picker.Item label="World" value="key4" />
+              </Picker>
+            </Form>
+          </View>
           <View style={styles.control}>
             {history.location.pathname.indexOf('home') !== -1 ? (
               <>
@@ -88,6 +114,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: 15,
+  },
+  select: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 })
 
