@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from 'react'
+import React, { useEffect, useState, useCallback, useContext } from 'react'
 import { StyleSheet, Image, Text, View, RefreshControl, SafeAreaView, ScrollView } from 'react-native'
 
 import Loader from './Loader'
@@ -13,7 +13,11 @@ const ArticlesList = props => {
   const valueContext = useContext(AppContext)
   const { onReguestArticles } = valueContext
 
-  setTimeout(() => setShow(false), 2000)
+  useEffect(() => {
+    return () => {
+      setTimeout(() => setShow(false), 2000)
+    }
+  })
 
   const onRefresh = useCallback(() => {
     if (!read) {
@@ -29,7 +33,7 @@ const ArticlesList = props => {
       <ScrollView contentContainerStyle={styles.scrollView} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         <View>
           {articles.map(item => {
-            return <ArticleItem article={item} {...props} />
+            return <ArticleItem article={item} key={item.url} {...props} />
           })}
         </View>
       </ScrollView>
