@@ -56,8 +56,6 @@ const Main = ({ history }) => {
     return coincidence
   }
 
-  console.log('articles', articles.length)
-
   return <ArticlesList articles={articles} onDelete={() => console.log('test')} onhandlerPress={handlerPress} />
 }
 

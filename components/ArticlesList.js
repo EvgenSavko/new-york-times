@@ -14,8 +14,10 @@ const ArticlesList = props => {
   const { onReguestArticles } = valueContext
 
   useEffect(() => {
+    const timer = setTimeout(() => setShow(false), 2000)
     return () => {
-      setTimeout(() => setShow(false), 2000)
+      clearTimeout(timer)
+      setShow(true)
     }
   })
 
@@ -81,6 +83,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: 10,
+  },
+  scrollView: {
+    paddingTop: 2,
+    borderTopWidth: 2,
+    borderBottomColor: 'red',
   },
 })
 

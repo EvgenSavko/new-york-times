@@ -17,14 +17,21 @@ import './lib/firebase'
 
 function App() {
   const [articles, setArticles] = useState([])
+  const [category, setCategory] = useState('arts')
 
-  const onReguestArticles = () => api().then(data => setArticles(data.results))
+  const onReguestArticles = () => api(category.toLocaleLowerCase()).then(data => setArticles(data.results))
+
+  const onChangeCategory = value => {
+    setCategory(value)
+    setArticles([])
+    api(value.toLocaleLowerCase()).then(data => setArticles(data.results))
+  }
 
   // app.auth().signOut()
 
   return (
     <NativeRouter>
-      <AppProvider value={{ articles, onReguestArticles }}>
+      <AppProvider value={{ articles, onReguestArticles, onChangeCategory }}>
         <>
           <View style={styles.nav}>
             {/* <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>

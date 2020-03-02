@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, View, Button, Text } from 'react-native'
-import { Content, Icon, Picker, Form } from 'native-base'
+import { Picker, Form } from 'native-base'
 
 import { withRouter, Route } from 'react-router-native'
 
 import Main from './Main'
 import Read from './Read'
 
+import AppContext from '../context/AppContext'
+
 import app from 'firebase/app'
 
 function Home({ history }) {
   const [state, setState] = useState({ currentUser: null })
-  const [selected, setSelected] = useState('key0')
+  const [selected, setSelected] = useState('Arts')
+  const valueContext = useContext(AppContext)
+  const { onChangeCategory } = valueContext
 
   useEffect(() => {
     const { currentUser } = app.auth()
@@ -36,6 +40,7 @@ function Home({ history }) {
 
   const onValueChange = value => {
     setSelected(value)
+    onChangeCategory(value)
   }
 
   console.log(history.location.pathname)
@@ -46,25 +51,6 @@ function Home({ history }) {
       </View>
       {state.currentUser && (
         <View style={styles.container}>
-          <View style={styles.select}>
-            <Text>Select category: </Text>
-            <Form>
-              <Picker
-                mode="dropdown"
-                placeholder="Select One"
-                placeholderStyle={{ color: '#2874F0' }}
-                note={false}
-                selectedValue={selected}
-                onValueChange={onValueChange}
-              >
-                <Picker.Item label="Arts" value="key0" />
-                <Picker.Item label="Home" value="key1" />
-                <Picker.Item label="Science" value="key2" />
-                <Picker.Item label="Us" value="key3" />
-                <Picker.Item label="World" value="key4" />
-              </Picker>
-            </Form>
-          </View>
           <View style={styles.control}>
             {history.location.pathname.indexOf('home') !== -1 ? (
               <>
@@ -86,7 +72,30 @@ function Home({ history }) {
               </>
             )}
           </View>
-
+          <View style={styles.select}>
+            {history.location.pathname.indexOf('home') !== -1 && (
+              <>
+                <Text>Select category: </Text>
+                <Form>
+                  <Picker
+                    mode="dropdown"
+                    placeholder="Select One"
+                    placeholderStyle={{ color: '#2874F0' }}
+                    textStyle={{ color: '#2874F0', fontWeight: '500' }}
+                    note={false}
+                    selectedValue={selected}
+                    onValueChange={onValueChange}
+                  >
+                    <Picker.Item label="Arts" value="Arts" />
+                    <Picker.Item label="Home" value="Home" />
+                    <Picker.Item label="Science" value="Science" />
+                    <Picker.Item label="Us" value="Us" />
+                    <Picker.Item label="World" value="World" />
+                  </Picker>
+                </Form>
+              </>
+            )}
+          </View>
           <Route path="/main/home" component={Main} />
           <Route path="/main/read" component={Read} />
         </View>
@@ -113,12 +122,16 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 15,
+    // paddingBottom: 15,
   },
   select: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    height: 30,
+    // borderWidth: 1,
+    // borderBottomColor: 'red',
+    // marginBottom: 15,
   },
 })
 
