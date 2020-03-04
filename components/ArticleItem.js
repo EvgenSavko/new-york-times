@@ -26,12 +26,16 @@ const ArticlesItem = ({ article, onhandlerPress, read, onDelete }) => {
   const handleDelete = url => {
     setLoadDelete(url)
     onDelete(url)
-    swipeable && swipeable.current.recenter()
+    swipeable.current && swipeable.current.recenter()
   }
 
   return (
     <View style={{ width }} key={url}>
-      <Swipeable ref={swipeable} rightButtons={rightButtons} onSwipeStart={() => setTimeout(() => swipeable && swipeable.current.recenter(), 1700)}>
+      <Swipeable
+        ref={swipeable}
+        rightButtons={rightButtons}
+        onSwipeStart={() => setTimeout(() => swipeable.current && swipeable.current.recenter(), 1700)}
+      >
         <TouchableWithoutFeedback onPress={() => onhandlerPress({ url, title, abstract, multimedia: [null, null, { url: multimedia[2].url }] })}>
           <View style={read ? { ...styles.row, ...styles.read } : styles.row}>
             {loadDelete === url && <Loader style={{ position: 'absolute', left: '48%', top: '40%' }} />}

@@ -17,7 +17,6 @@ const ArticlesList = props => {
     const timer = setTimeout(() => setShow(false), 2000)
     return () => {
       clearTimeout(timer)
-      setShow(true)
     }
   })
 

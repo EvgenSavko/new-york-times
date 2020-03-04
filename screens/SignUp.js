@@ -14,6 +14,7 @@ const SignUp = ({ history }) => {
         usersDB.doc(data.user.uid).set({
           uid: data.user.uid,
           email: state.email,
+          role: 'user',
           articles: [],
         })
         history.push('/main/home')

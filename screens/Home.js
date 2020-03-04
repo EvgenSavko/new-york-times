@@ -10,6 +10,7 @@ import Read from './Read'
 import AppContext from '../context/AppContext'
 
 import app from 'firebase/app'
+import { usersDB } from '../lib/firebase'
 
 function Home({ history }) {
   const [state, setState] = useState({ currentUser: null })
@@ -20,7 +21,8 @@ function Home({ history }) {
   useEffect(() => {
     const { currentUser } = app.auth()
     if (!currentUser) history.push('/login')
-    setState({ currentUser })
+    const docUser = usersDB.doc(currentUser.uid)
+    docUser.get().then(user => setState({ currentUser: { ...currentUser, role: user.data().role } }))
   }, [])
 
   const logOutHandler = () => {
@@ -43,7 +45,6 @@ function Home({ history }) {
     onChangeCategory(value)
   }
 
-  console.log(history.location.pathname)
   return (
     <>
       <View style={styles.header}>
@@ -52,21 +53,26 @@ function Home({ history }) {
       {state.currentUser && (
         <View style={styles.container}>
           <View style={styles.control}>
-            {history.location.pathname.indexOf('home') !== -1 ? (
+            {history.location.pathname.indexOf('home') !== -1 && (
               <>
                 <Text style={styles.title}>
-                  Hello, <Text style={{ fontStyle: 'italic' }}>{state.currentUser.email}</Text> !
+                  Hello,{' '}
+                  <Text style={{ fontStyle: 'italic' }}>
+                    {state.currentUser.email}({state.currentUser.role})
+                  </Text>{' '}
+                  !
                 </Text>
                 <View style={{ flexDirection: 'row' }}>
                   <Button title="Top articles" disabled />
                   <Button title="Read articles " onPress={() => history.push('/main/read')} />
                 </View>
               </>
-            ) : (
+            )}
+            {history.location.pathname.indexOf('read') !== -1 && (
               <>
                 <Text style={styles.title}>My read articles !</Text>
                 <View style={{ flexDirection: 'row' }}>
-                  <Button title="Top articles" style={{ borderColo: 'red' }} onPress={() => history.push('/main/home')} />
+                  <Button title="Top articles" onPress={() => history.push('/main/home')} />
                   <Button title="Read articles " disabled />
                 </View>
               </>
