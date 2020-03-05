@@ -36,7 +36,9 @@ const ArticlesItem = ({ article, onhandlerPress, read, onDelete }) => {
         rightButtons={rightButtons}
         onSwipeStart={() => setTimeout(() => swipeable.current && swipeable.current.recenter(), 1700)}
       >
-        <TouchableWithoutFeedback onPress={() => onhandlerPress({ url, title, abstract, multimedia: [null, null, { url: multimedia[2].url }] })}>
+        <TouchableWithoutFeedback
+          onPress={() => onhandlerPress({ url, title, abstract, multimedia: [{ url: multimedia[0].url }, null, { url: multimedia[2].url }] })}
+        >
           <View style={read ? { ...styles.row, ...styles.read } : styles.row}>
             {loadDelete === url && <Loader style={{ position: 'absolute', left: '48%', top: '40%' }} />}
             <View style={{ width: (width / 100) * 23 }}>

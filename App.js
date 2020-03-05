@@ -43,7 +43,7 @@ function App() {
             <Link to="/login" underlayColor="#f0f4f7" style={styles.navItem}>
               <Text>login</Text>
             </Link>
-            <Link to="/main" underlayColor="#f0f4f7" style={styles.navItem}>
+            <Link to="/main/home" underlayColor="#f0f4f7" style={styles.navItem}>
               <Text>main</Text>
             </Link> */}
           </View>
