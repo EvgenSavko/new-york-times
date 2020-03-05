@@ -65,7 +65,7 @@ const TopArticles = ({ history }) => {
           articles.map(item => {
             const { url, title, abstract, multimedia, created_date } = item
             return (
-              <Card style={{ flex: 1 }}>
+              <Card key={url} style={{ flex: 1 }}>
                 <CardItem>
                   <Left>
                     <TouchableWithoutFeedback onPress={() => Linking.openURL(url)}>
