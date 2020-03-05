@@ -6,7 +6,8 @@ import { withRouter, Route } from 'react-router-native'
 
 import Main from './Main'
 import Read from './Read'
-import TopArticles from './TopArticles'
+import APIArticles from './APIArticles'
+import Review from './Review'
 
 import AppContext from '../context/AppContext'
 
@@ -67,7 +68,7 @@ function Home({ history }) {
                   <View style={{ flexDirection: 'row' }}>
                     <Button title="Top articles" disabled />
                     <Button title="Read articles " onPress={() => history.push('/main/read')} />
-                    {state.currentUser.role === 'admin' && <Button title="Articles" onPress={() => history.push('/main/top_articles')} />}
+                    {state.currentUser.role === 'admin' && <Button title="API Articles" onPress={() => history.push('/main/api_articles')} />}
                   </View>
                 </>
               )}
@@ -77,49 +78,63 @@ function Home({ history }) {
                   <View style={{ flexDirection: 'row' }}>
                     <Button title="Top articles" onPress={() => history.push('/main/home')} />
                     <Button title="Read articles " disabled />
-                    {state.currentUser.role === 'admin' && <Button title="Articles" onPress={() => history.push('/main/top_articles')} />}
+                    {state.currentUser.role === 'admin' && <Button title="API Articles" onPress={() => history.push('/main/api_articles')} />}
                   </View>
                 </>
               )}
-              {history.location.pathname.indexOf('top_articles') !== -1 && (
+              {history.location.pathname.indexOf('api_articles') !== -1 && (
                 <>
                   <Text style={styles.title}>Select articles for all users</Text>
                   <View style={{ flexDirection: 'row' }}>
                     <Button title="Top articles" onPress={() => history.push('/main/home')} />
                     <Button title="Read articles " onPress={() => history.push('/main/read')} />
-                    {state.currentUser.role === 'admin' && <Button title="Articles" disabled />}
+                    {state.currentUser.role === 'admin' && <Button title="API Articles" disabled />}
+                    {state.currentUser.role === 'admin' && <Button title="Review" onPress={() => history.push('/main/review')} />}
+                  </View>
+                </>
+              )}
+              {history.location.pathname.indexOf('review') !== -1 && (
+                <>
+                  <Text style={styles.title}>Select articles for all users</Text>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Button title="Top articles" onPress={() => history.push('/main/home')} />
+                    <Button title="Read articles " onPress={() => history.push('/main/read')} />
+                    {state.currentUser.role === 'admin' && <Button title="API Articles" onPress={() => history.push('/main/api_articles')} />}
+                    {state.currentUser.role === 'admin' && <Button title="Review" disabled />}
                   </View>
                 </>
               )}
             </View>
             <View style={styles.select}>
-              {(history.location.pathname.indexOf('home') !== -1 || history.location.pathname.indexOf('top_articles') !== -1) && (
-                <>
-                  <Text>Select category: </Text>
-                  <Form>
-                    <Picker
-                      mode="dropdown"
-                      placeholder="Select One"
-                      placeholderStyle={{ color: '#2874F0' }}
-                      textStyle={{ color: '#2874F0', fontWeight: '500' }}
-                      note={false}
-                      selectedValue={selected}
-                      onValueChange={onValueChange}
-                    >
-                      <Picker.Item label="Arts" value="Arts" />
-                      <Picker.Item label="Home" value="Home" />
-                      <Picker.Item label="Science" value="Science" />
-                      <Picker.Item label="Us" value="Us" />
-                      <Picker.Item label="World" value="World" />
-                    </Picker>
-                  </Form>
-                </>
-              )}
+              {(history.location.pathname.indexOf('home') !== -1 || history.location.pathname.indexOf('api_articles') !== -1) &&
+                state.currentUser.role === 'admin' && (
+                  <>
+                    <Text>Select category: </Text>
+                    <Form>
+                      <Picker
+                        mode="dropdown"
+                        placeholder="Select One"
+                        placeholderStyle={{ color: '#2874F0' }}
+                        textStyle={{ color: '#2874F0', fontWeight: '500' }}
+                        note={false}
+                        selectedValue={selected}
+                        onValueChange={onValueChange}
+                      >
+                        <Picker.Item label="Arts" value="Arts" />
+                        <Picker.Item label="Home" value="Home" />
+                        <Picker.Item label="Science" value="Science" />
+                        <Picker.Item label="Us" value="Us" />
+                        <Picker.Item label="World" value="World" />
+                      </Picker>
+                    </Form>
+                  </>
+                )}
             </View>
           </View>
           <Route path="/main/home" component={Main} />
           <Route path="/main/read" component={Read} />
-          <Route path="/main/top_articles" component={TopArticles} />
+          <Route path="/main/api_articles" component={APIArticles} />
+          <Route path="/main/review" component={Review} />
         </>
       )}
     </>

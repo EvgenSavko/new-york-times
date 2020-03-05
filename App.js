@@ -11,27 +11,35 @@ import Home from './screens/Home'
 import { AppProvider } from './context/AppContext'
 
 import { api } from './lib/api'
+import { articlesDB } from './lib/firebase'
 import './lib/firebase'
 
 // import app from 'firebase/app'
 
 function App() {
   const [articles, setArticles] = useState([])
+  const [articlesAPI, setArticlesAPI] = useState([])
   const [category, setCategory] = useState('arts')
 
-  const onReguestArticles = () => api(category.toLocaleLowerCase()).then(data => setArticles(data.results))
+  const onReguestArticlesAPI = () => api(category.toLocaleLowerCase()).then(data => setArticlesAPI(data.results))
+
+  const onReguestArticles = () =>
+    articlesDB
+      .doc('selected')
+      .get()
+      .then(data => setArticles(data.data().articles))
 
   const onChangeCategory = value => {
     setCategory(value)
-    setArticles([])
-    api(value.toLocaleLowerCase()).then(data => setArticles(data.results))
+    setArticlesAPI([])
+    api(value.toLocaleLowerCase()).then(data => setArticlesAPI(data.results))
   }
 
   // app.auth().signOut()
 
   return (
     <NativeRouter>
-      <AppProvider value={{ articles, onReguestArticles, onChangeCategory }}>
+      <AppProvider value={{ articles, articlesAPI, onReguestArticles, onReguestArticlesAPI, onChangeCategory }}>
         <>
           <View style={styles.nav}>
             {/* <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>

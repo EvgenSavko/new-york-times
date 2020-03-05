@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     paddingTop: 2,
+    paddingBottom: 150,
     borderTopWidth: 2,
     borderBottomColor: 'red',
   },
