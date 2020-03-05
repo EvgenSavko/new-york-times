@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 
-import { NativeRouter, Route, Link } from 'react-router-native'
+import { NativeRouter, Route, Link, Switch } from 'react-router-native'
+import { RouterConfig, RoutesWithSubRoutes } from './routes';
 
 import Loading from './screens/Loading'
 import SignUp from './screens/SignUp'
@@ -16,8 +17,10 @@ import './lib/firebase'
 // import app from 'firebase/app'
 
 function App() {
+  console.log('APP',)
   const [articles, setArticles] = useState([])
   const [category, setCategory] = useState('arts')
+  const { routes, noRouteFound } = RouterConfig();
 
   const onReguestArticles = () => api(category.toLocaleLowerCase()).then(data => setArticles(data.results))
 
@@ -47,10 +50,16 @@ function App() {
               <Text>main</Text>
             </Link> */}
           </View>
-          <Route exact path="/" component={Loading} />
-          <Route path="/sign_up" component={SignUp} />
-          <Route path="/main" component={Home} />
-          <Route path="/login" component={Login} />
+          <Switch>
+            {routes.map(route => (
+              <RoutesWithSubRoutes key={route.path} {...route} />
+            ))}
+            {noRouteFound}
+          </Switch>
+          {/*<Route exact path="/" component={Loading} />*/}
+          {/*<Route path="/sign_up" component={SignUp} />*/}
+          {/*<Route path="/main" component={Home} />*/}
+          {/*<Route path="/login" component={Login} />*/}
         </>
       </AppProvider>
     </NativeRouter>

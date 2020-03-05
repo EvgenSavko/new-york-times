@@ -7,7 +7,7 @@ import app from 'firebase/app'
 const Loading = ({ history }) => {
   useEffect(() => {
     app.auth().onAuthStateChanged(user => {
-      user ? history.push('/main/home') : history.push('/login')
+      user ? history.push('/dashboard') : history.push('/login')
     })
   }, [])
 
