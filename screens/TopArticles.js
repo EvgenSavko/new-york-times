@@ -4,13 +4,11 @@ import { withRouter } from 'react-router-native'
 import { Linking, Image, TouchableWithoutFeedback } from 'react-native'
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body } from 'native-base'
 
-// import ArticlesList from '../components/ArticlesList'
-
 import app from 'firebase/app'
 
 import AppContext from '../context/AppContext'
 
-import { usersDB, articlesDB } from '../lib/firebase'
+import { articlesDB } from '../lib/firebase'
 
 const TopArticles = ({ history }) => {
   const [state, setState] = useState({ currentUser: null })
@@ -57,7 +55,6 @@ const TopArticles = ({ history }) => {
     return coincidence
   }
 
-  //   return <ArticlesList articles={articles} onDelete={() => console.log('test')} onhandlerPress={handlerPress} />
   return (
     <Container>
       <Content>
