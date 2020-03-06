@@ -1,13 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, View, Button, Text } from 'react-native'
-import { Picker, Form } from 'native-base'
+import React, { useState, useEffect, useContext, useRef } from 'react'
+import { StyleSheet, View, Button, Text, ScrollView } from 'react-native'
+import { Container } from 'native-base'
 
 import { withRouter, Route } from 'react-router-native'
-
+import { Header } from '../modules'
 import Main from './Main'
 import Read from './Read'
 import APIArticles from './APIArticles'
 import Review from './Review'
+import Profile from './Profile'
+import { Drawer } from '../modules'
 
 import AppContext from '../context/AppContext'
 
@@ -47,104 +49,122 @@ function Home({ history }) {
     onChangeCategory(value)
   }
 
+  const drawerRef = useRef(null)
+  const handleOpenDrawer = () => {
+    console.log('dlick')
+    if (drawerRef.current) {
+      drawerRef.current._root.open()
+    }
+  }
+
   return (
-    <>
-      <View style={styles.header}>
-        <Button title="Log out" onPress={logOutHandler} />
-      </View>
-      {state.currentUser && (
-        <>
-          <View style={styles.container}>
-            <View style={styles.control}>
-              {history.location.pathname.indexOf('home') !== -1 && (
-                <>
-                  <Text style={styles.title}>
-                    Hello,
-                    <Text style={{ fontStyle: 'italic' }}>
-                      {state.currentUser.email}({state.currentUser.role})
-                    </Text>
-                    !
-                  </Text>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Button title="Top articles" disabled />
-                    <Button title="Read articles " onPress={() => history.push('/main/read')} />
-                    {state.currentUser.role === 'admin' && <Button title="API Articles" onPress={() => history.push('/main/api_articles')} />}
-                  </View>
-                </>
-              )}
-              {history.location.pathname.indexOf('read') !== -1 && (
-                <>
-                  <Text style={styles.title}>My read articles !</Text>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Button title="Top articles" onPress={() => history.push('/main/home')} />
-                    <Button title="Read articles " disabled />
-                    {state.currentUser.role === 'admin' && <Button title="API Articles" onPress={() => history.push('/main/api_articles')} />}
-                  </View>
-                </>
-              )}
-              {history.location.pathname.indexOf('api_articles') !== -1 && (
-                <>
-                  <Text style={styles.title}>Select articles for all users</Text>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Button title="Top articles" onPress={() => history.push('/main/home')} />
-                    <Button title="Read articles " onPress={() => history.push('/main/read')} />
-                    {state.currentUser.role === 'admin' && <Button title="API Articles" disabled />}
-                    {state.currentUser.role === 'admin' && <Button title="Review" onPress={() => history.push('/main/review')} />}
-                  </View>
-                </>
-              )}
-              {history.location.pathname.indexOf('review') !== -1 && (
-                <>
-                  <Text style={styles.title}>Select articles for all users</Text>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Button title="Top articles" onPress={() => history.push('/main/home')} />
-                    <Button title="Read articles " onPress={() => history.push('/main/read')} />
-                    {state.currentUser.role === 'admin' && <Button title="API Articles" onPress={() => history.push('/main/api_articles')} />}
-                    {state.currentUser.role === 'admin' && <Button title="Review" disabled />}
-                  </View>
-                </>
-              )}
-            </View>
-            <View style={styles.select}>
-              {(history.location.pathname.indexOf('home') !== -1 || history.location.pathname.indexOf('api_articles') !== -1) &&
-                state.currentUser.role === 'admin' && (
-                  <>
-                    <Text>Select category: </Text>
-                    <Form>
-                      <Picker
-                        mode="dropdown"
-                        placeholder="Select One"
-                        placeholderStyle={{ color: '#2874F0' }}
-                        textStyle={{ color: '#2874F0', fontWeight: '500' }}
-                        note={false}
-                        selectedValue={selected}
-                        onValueChange={onValueChange}
-                      >
-                        <Picker.Item label="Arts" value="Arts" />
-                        <Picker.Item label="Home" value="Home" />
-                        <Picker.Item label="Science" value="Science" />
-                        <Picker.Item label="Us" value="Us" />
-                        <Picker.Item label="World" value="World" />
-                      </Picker>
-                    </Form>
-                  </>
-                )}
-            </View>
-          </View>
-          <Route path="/main/home" component={Main} />
-          <Route path="/main/read" component={Read} />
-          <Route path="/main/api_articles" component={APIArticles} />
-          <Route path="/main/review" component={Review} />
-        </>
-      )}
-    </>
+    <Container>
+      <Header handleOpenDrawer={handleOpenDrawer} history={history} />
+      <Drawer ref={drawerRef}>
+        <Route path="/main/home" component={Main} />
+        <Route path="/main/read" component={Read} />
+        <Route path="/main/api_articles" component={APIArticles} />
+        <Route path="/main/review" component={Review} />
+        <Route path="/main/profile" component={Profile} />
+      </Drawer>
+      {/*<View style={styles.header}>*/}
+      {/*<Button title="Log out" onPress={logOutHandler} />*/}
+      {/*</View>*/}
+      {/*{state.currentUser && (*/}
+      {/*<>*/}
+      {/*<View style={styles.container}>*/}
+      {/*<View style={styles.control}>*/}
+      {/*{history.location.pathname.indexOf('home') !== -1 && (*/}
+      {/*<>*/}
+      {/*<Text style={styles.title}>*/}
+      {/*Hello,*/}
+      {/*<Text style={{ fontStyle: 'italic' }}>*/}
+      {/*{state.currentUser.email}({state.currentUser.role})*/}
+      {/*</Text>*/}
+      {/*!*/}
+      {/*</Text>*/}
+      {/*<View style={{ flexDirection: 'row' }}>*/}
+      {/*<Button title="Top articles" disabled />*/}
+      {/*<Button title="Read articles " onPress={() => history.push('/main/read')} />*/}
+      {/*{state.currentUser.role === 'admin' && <Button title="API Articles" onPress={() => history.push('/main/api_articles')} />}*/}
+      {/*</View>*/}
+      {/*</>*/}
+      {/*)}*/}
+      {/*{history.location.pathname.indexOf('read') !== -1 && (*/}
+      {/*<>*/}
+      {/*<Text style={styles.title}>My read articles !</Text>*/}
+      {/*<View style={{ flexDirection: 'row' }}>*/}
+      {/*<Button title="Top articles" onPress={() => history.push('/main/home')} />*/}
+      {/*<Button title="Read articles " disabled />*/}
+      {/*{state.currentUser.role === 'admin' && <Button title="API Articles" onPress={() => history.push('/main/api_articles')} />}*/}
+      {/*</View>*/}
+      {/*</>*/}
+      {/*)}*/}
+      {/*{history.location.pathname.indexOf('api_articles') !== -1 && (*/}
+      {/*<>*/}
+      {/*<Text style={styles.title}>Select articles for all users</Text>*/}
+      {/*<View style={{ flexDirection: 'row' }}>*/}
+      {/*<Button title="Top articles" onPress={() => history.push('/main/home')} />*/}
+      {/*<Button title="Read articles " onPress={() => history.push('/main/read')} />*/}
+      {/*{state.currentUser.role === 'admin' && <Button title="API Articles" disabled />}*/}
+      {/*{state.currentUser.role === 'admin' && <Button title="Review" onPress={() => history.push('/main/review')} />}*/}
+      {/*</View>*/}
+      {/*</>*/}
+      {/*)}*/}
+      {/*{history.location.pathname.indexOf('review') !== -1 && (*/}
+      {/*<>*/}
+      {/*<Text style={styles.title}>Select articles for all users</Text>*/}
+      {/*<View style={{ flexDirection: 'row' }}>*/}
+      {/*<Button title="Top articles" onPress={() => history.push('/main/home')} />*/}
+      {/*<Button title="Read articles " onPress={() => history.push('/main/read')} />*/}
+      {/*{state.currentUser.role === 'admin' && <Button title="API Articles" onPress={() => history.push('/main/api_articles')} />}*/}
+      {/*{state.currentUser.role === 'admin' && <Button title="Review" disabled />}*/}
+      {/*</View>*/}
+      {/*</>*/}
+      {/*)}*/}
+      {/*</View>*/}
+      {/*<View style={styles.select}>*/}
+      {/*{(history.location.pathname.indexOf('home') !== -1 || history.location.pathname.indexOf('api_articles') !== -1) &&*/}
+      {/*state.currentUser.role === 'admin' && (*/}
+      {/*<>*/}
+      {/*<Text>Select category: </Text>*/}
+      {/*<Form>*/}
+      {/*<Picker*/}
+      {/*mode="dropdown"*/}
+      {/*placeholder="Select One"*/}
+      {/*placeholderStyle={{ color: '#2874F0' }}*/}
+      {/*textStyle={{ color: '#2874F0', fontWeight: '500' }}*/}
+      {/*note={false}*/}
+      {/*selectedValue={selected}*/}
+      {/*onValueChange={onValueChange}*/}
+      {/*>*/}
+      {/*<Picker.Item label="Arts" value="Arts" />*/}
+      {/*<Picker.Item label="Home" value="Home" />*/}
+      {/*<Picker.Item label="Science" value="Science" />*/}
+      {/*<Picker.Item label="Us" value="Us" />*/}
+      {/*<Picker.Item label="World" value="World" />*/}
+      {/*</Picker>*/}
+      {/*</Form>*/}
+      {/*</>*/}
+      {/*)}*/}
+      {/*</View>*/}
+      {/*</View>*/}
+      {/*<Route path="/main/home" component={Main} />*/}
+      {/*<Route path="/main/read" component={Read} />*/}
+      {/*<Route path="/main/api_articles" component={APIArticles} />*/}
+      {/*<Route path="/main/review" component={Review} />*/}
+      {/*</>*/}
+      {/*)}*/}
+    </Container>
   )
 }
 
 const styles = StyleSheet.create({
   header: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
+    height: 60,
+    backgroundColor: 'olive',
+    // justifyContent: 'flex-start',
+    // alignItems: 'flex-end',
   },
   title: {
     fontSize: 15,
