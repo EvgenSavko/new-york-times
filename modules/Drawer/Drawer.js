@@ -10,7 +10,11 @@ const Drawer = forwardRef((props, drawerRef) => {
   }
 
   return (
-    <DrawerNative ref={drawerRef} content={<SideBar handleCloseDrawer={handleCloseDrawer} />} onClose={handleCloseDrawer}>
+    <DrawerNative
+      ref={drawerRef}
+      content={<SideBar handleCloseDrawer={handleCloseDrawer} currentUser={props.currentUser} />}
+      onClose={handleCloseDrawer}
+    >
       {props.children}
     </DrawerNative>
   )

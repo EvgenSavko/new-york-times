@@ -6,7 +6,7 @@ import { Body, Button, Header as HeaderNativeBase, Icon, Left, Right, Title, Tex
 
 const Header = ({
   history,
-  handleOpenDrawer
+  handleOpenDrawer,
 }) => {
   return (
     <>

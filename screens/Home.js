@@ -60,16 +60,13 @@ function Home({ history }) {
   return (
     <Container>
       <Header handleOpenDrawer={handleOpenDrawer} history={history} />
-      <Drawer ref={drawerRef}>
+      <Drawer ref={drawerRef} currentUser={state.currentUser}>
         <Route path="/main/home" component={Main} />
         <Route path="/main/read" component={Read} />
         <Route path="/main/api_articles" component={APIArticles} />
         <Route path="/main/review" component={Review} />
         <Route path="/main/profile" component={Profile} />
       </Drawer>
-      {/*<View style={styles.header}>*/}
-      {/*<Button title="Log out" onPress={logOutHandler} />*/}
-      {/*</View>*/}
       {/*{state.currentUser && (*/}
       {/*<>*/}
       {/*<View style={styles.container}>*/}

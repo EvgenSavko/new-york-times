@@ -4,41 +4,35 @@ import { withRouter, Route } from 'react-router-native'
 import { white, primary, text, secondary } from '../../../utils/constants/theme'
 import { Container, Content, List, ListItem, Text, Left, Right, Icon } from 'native-base'
 import app from 'firebase/app'
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 const routesList = [
   {
     id: 1,
     title: 'Main',
     route: '/main/home',
-    renderIcon: (color) => <MaterialIcons size={20} name="home" color={color}/>
+    renderIcon: color => <MaterialIcons size={20} name="home" color={color} />,
   },
   {
     id: 2,
     title: 'Read',
     route: '/main/read',
-    renderIcon: (color) => <MaterialIcons size={20} name="forward" color={color}/>
-  },
-  {
-    id: 3,
-    title: 'API articles',
-    route: '/main/api_articles',
-    renderIcon: (color) => <MaterialIcons size={20} name="forward" color={color}/>
+    renderIcon: color => <MaterialIcons size={20} name="forward" color={color} />,
   },
   {
     id: 4,
     title: 'Review',
     route: '/main/review',
-    renderIcon: (color) => <MaterialIcons size={20} name="forward" color={color}/>
+    renderIcon: color => <MaterialIcons size={20} name="forward" color={color} />,
   },
   {
     id: 5,
     title: 'Profile',
     route: '/main/profile',
-    renderIcon: (color) => <MaterialIcons size={20} name="pencil" color={color}/>
+    renderIcon: color => <MaterialIcons size={20} name="pencil" color={color} />,
   },
 ]
 
-const Sidebar = ({ history, handleCloseDrawer }) => {
+const Sidebar = ({ history, handleCloseDrawer, currentUser }) => {
   const [activeRoute, setActiveRoute] = useState(null)
 
   useEffect(() => {
@@ -63,21 +57,40 @@ const Sidebar = ({ history, handleCloseDrawer }) => {
       )
   }
 
+  const renderArticlesAPI = () => currentUser.role === 'admin' ?
+    (
+        <ListItem
+          selected={activeRoute === 6}
+          onPress={() => {
+            setActiveRoute(6)
+            history.push('/main/api_articles')
+            handleCloseDrawer()
+          }}
+          style={activeRoute === 6 && styles.activeItem}
+        >
+          <Left>
+            <Text style={styles.text}>API articles</Text>
+          </Left>
+          <Right>
+            <MaterialIcons name="forward" size={20} />
+          </Right>
+        </ListItem>
+      ) : null
+
   console.log('activeRoute ', activeRoute)
   return (
     <Container style={styles.container}>
       <Content>
         <List>
-          <ListItem
-            onPress={logOutHandler}
-          >
+          <ListItem onPress={logOutHandler}>
             <Left>
               <Text style={styles.text}>Log Out</Text>
             </Left>
             <Right>
-              <MaterialIcons name='logout' size={20}/>
+              <MaterialIcons name="logout" size={20} />
             </Right>
           </ListItem>
+          {renderArticlesAPI()}
           {routesList.map(item => (
             <ListItem
               key={item.id}
