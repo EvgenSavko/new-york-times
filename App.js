@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
-
+import * as Font from 'expo-font'
 import { NativeRouter, Route, Link } from 'react-router-native'
+import { Ionicons } from '@expo/vector-icons'
 
 import Loading from './screens/Loading'
 import SignUp from './screens/SignUp'
@@ -17,9 +18,19 @@ import './lib/firebase'
 // import app from 'firebase/app'
 
 function App() {
+  const [isReady, setIsReady] = useState(false)
   const [articles, setArticles] = useState([])
   const [articlesAPI, setArticlesAPI] = useState([])
   const [category, setCategory] = useState('arts')
+
+  useEffect(async () => {
+    await Font.loadAsync({
+      Roboto: require('native-base/Fonts/Roboto.ttf'),
+      Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+      ...Ionicons.font,
+    })
+    setIsReady(true)
+  }, [])
 
   const onReguestArticlesAPI = () => api(category.toLocaleLowerCase()).then(data => setArticlesAPI(data.results))
 
@@ -36,7 +47,7 @@ function App() {
   }
 
   // app.auth().signOut()
-
+  if (!isReady) return null
   return (
     <NativeRouter>
       <AppProvider value={{ articles, articlesAPI, onReguestArticles, onReguestArticlesAPI, onChangeCategory }}>
