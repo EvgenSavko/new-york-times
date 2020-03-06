@@ -16,7 +16,7 @@ const Login = ({ history }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View>
       <Text>Login</Text>
       {state.errorMessage && <Text style={{ color: 'red' }}>{state.errorMessage}</Text>}
       <TextInput
@@ -41,7 +41,7 @@ const Login = ({ history }) => {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

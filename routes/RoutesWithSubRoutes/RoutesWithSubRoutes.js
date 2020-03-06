@@ -4,7 +4,7 @@ import {
   PrivateRoute,
   PublicRoute,
   WithRole
-} from '../../routes';
+} from '../../routes/index.js';
 
 const RouteWithSubRoutes = ({
   status,

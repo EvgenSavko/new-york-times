@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 
 import { NativeRouter, Route, Link, Switch } from 'react-router-native'
-import { RouterConfig, RoutesWithSubRoutes } from './routes';
-
-import Loading from './screens/Loading'
-import SignUp from './screens/SignUp'
-import Login from './screens/Login'
-import Home from './screens/Home'
+import RouterConfig from './routes/RouterConfig';
+import RoutesWithSubRoutes from './routes/RoutesWithSubRoutes'
+// import Loading from './screens/Loading'
+// import SignUp from './screens/SignUp'
+// import Login from './screens/Login'
+// import Home from './screens/Home'
 
 import { AppProvider } from './context/AppContext'
 
