@@ -16,9 +16,9 @@ const Review = ({ history }) => {
 
   const datas = ['Simon Mignolet', 'Nathaniel Clyne', 'Dejan Lovren', 'Mama Sakho', 'Alberto Moreno', 'Emre Can', 'Joe Allen', 'Phil Coutinho']
 
-  useEffect(() => {
-    articles.length < 1 && onReguestArticles()
-  }, [articles])
+  // useEffect(() => {
+  //   articles.length < 1 && onReguestArticles()
+  // }, [articles])
 
   return (
     <Container>

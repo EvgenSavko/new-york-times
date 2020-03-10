@@ -23,13 +23,12 @@ function App() {
   const [articlesAPI, setArticlesAPI] = useState([])
   const [category, setCategory] = useState('arts')
 
-  useEffect(async () => {
-    await Font.loadAsync({
+  useEffect(() => {
+    Font.loadAsync({
       Roboto: require('native-base/Fonts/Roboto.ttf'),
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
       ...Ionicons.font,
-    })
-    setIsReady(true)
+    }).then(() => setIsReady(true))
   }, [])
 
   const onReguestArticlesAPI = () => api(category.toLocaleLowerCase()).then(data => setArticlesAPI(data.results))
