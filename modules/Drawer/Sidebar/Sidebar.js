@@ -33,6 +33,7 @@ const routesList = [
 ]
 
 const Sidebar = ({ history, handleCloseDrawer, currentUser }) => {
+  console.log('currentUser 1',currentUser)
   const [activeRoute, setActiveRoute] = useState(null)
 
   useEffect(() => {
@@ -57,7 +58,7 @@ const Sidebar = ({ history, handleCloseDrawer, currentUser }) => {
       )
   }
 
-  const renderArticlesAPI = () => currentUser.role === 'admin' ?
+  const renderArticlesAPI = () => currentUser && currentUser.role === 'admin' ?
     (
         <ListItem
           selected={activeRoute === 6}
