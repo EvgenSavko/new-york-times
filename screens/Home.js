@@ -198,12 +198,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   select: {
-    display: 'flex',
-    flexDirection: 'row',
+    // display: 'flex',
+    // flexDirection: 'row',
     // alignItems: 'center',
     // justifyContent: 'center',
+    padding: 10,
     height: 100,
-    width: '100%',
+    // width: '100%',
     // backgroundColor: 'red'
   },
 })
