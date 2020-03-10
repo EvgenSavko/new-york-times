@@ -33,7 +33,6 @@ const routesList = [
 ]
 
 const Sidebar = ({ history, handleCloseDrawer, currentUser }) => {
-  // console.log('currentUser 1',currentUser)
   const [activeRoute, setActiveRoute] = useState(null)
 
   useEffect(() => {
@@ -78,7 +77,6 @@ const Sidebar = ({ history, handleCloseDrawer, currentUser }) => {
       </ListItem>
     ) : null
 
-  // console.log('activeRoute ', activeRoute)
   return (
     <Container style={styles.container}>
       <Content>
