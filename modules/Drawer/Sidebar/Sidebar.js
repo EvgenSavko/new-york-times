@@ -57,25 +57,25 @@ const Sidebar = ({ history, handleCloseDrawer, currentUser }) => {
       )
   }
 
-  const renderArticlesAPI = () => currentUser && currentUser.role === 'admin' ?
-    (
-        <ListItem
-          selected={activeRoute === 6}
-          onPress={() => {
-            setActiveRoute(6)
-            history.push('/main/api_articles')
-            handleCloseDrawer()
-          }}
-          style={activeRoute === 6 && styles.activeItem}
-        >
-          <Left>
-            <Text style={styles.text}>API articles</Text>
-          </Left>
-          <Right>
-            <MaterialIcons name="forward" size={20} />
-          </Right>
-        </ListItem>
-      ) : null
+  const renderArticlesAPI = () =>
+    currentUser && currentUser.role === 'admin' ? (
+      <ListItem
+        selected={activeRoute === 6}
+        onPress={() => {
+          setActiveRoute(6)
+          history.push('/main/api_articles')
+          handleCloseDrawer()
+        }}
+        style={activeRoute === 6 && styles.activeItem}
+      >
+        <Left>
+          <Text style={styles.text}>API articles</Text>
+        </Left>
+        <Right>
+          <MaterialIcons name="forward" size={20} />
+        </Right>
+      </ListItem>
+    ) : null
 
   return (
     <Container style={styles.container}>
