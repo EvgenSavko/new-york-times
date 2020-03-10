@@ -1,23 +1,25 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { withRouter } from 'react-router-native'
 
-import { Linking, Image, TouchableWithoutFeedback, ActivityIndicator } from 'react-native'
+import { Linking, Image, TouchableWithoutFeedback } from 'react-native'
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body } from 'native-base'
+
+// import ArticlesList from '../components/ArticlesList'
+
+import app from 'firebase/app'
 
 import AppContext from '../context/AppContext'
 
-import app from 'firebase/app'
-import { articlesDB } from '../lib/firebase'
+import { usersDB, articlesDB } from '../lib/firebase'
 
-const APIArticles = ({ history }) => {
+const TopArticles = ({ history }) => {
   const [state, setState] = useState({ currentUser: null })
-  const [load, setLoad] = useState(false)
   const valueContext = useContext(AppContext)
-  const { articlesAPI, onReguestArticlesAPI } = valueContext
+  const { articles, onReguestArticles } = valueContext
 
   useEffect(() => {
-    articlesAPI.length < 1 && onReguestArticlesAPI()
-  }, [articlesAPI])
+    articles.length < 1 && onReguestArticles()
+  }, [articles])
 
   useEffect(() => {
     const { currentUser } = app.auth()
@@ -26,7 +28,6 @@ const APIArticles = ({ history }) => {
   }, [])
 
   const handlerPress = ({ url, title, abstract, multimedia }) => {
-    setLoad(true)
     const obj = { url, title, abstract, multimedia }
     const docArticles = articlesDB.doc('selected')
     if (state.currentUser) {
@@ -45,7 +46,6 @@ const APIArticles = ({ history }) => {
           })
           .then(function() {
             console.log('Updated')
-            setLoad(false)
           })
       })
     }
@@ -57,15 +57,15 @@ const APIArticles = ({ history }) => {
     return coincidence
   }
 
+  //   return <ArticlesList articles={articles} onDelete={() => console.log('test')} onhandlerPress={handlerPress} />
   return (
     <Container>
       <Content>
-        {articlesAPI.length === 0 && <ActivityIndicator style={{ marginTop: '50%' }} color={'black'} />}
-        {articlesAPI.length > 0 &&
-          articlesAPI.map(item => {
+        {articles.length > 0 &&
+          articles.map(item => {
             const { url, title, abstract, multimedia, created_date } = item
             return (
-              <Card key={url} style={{ flex: 1 }}>
+              <Card style={{ flex: 1 }}>
                 <CardItem>
                   <Left>
                     <TouchableWithoutFeedback onPress={() => Linking.openURL(url)}>
@@ -88,13 +88,12 @@ const APIArticles = ({ history }) => {
                   <Left>
                     <Button
                       warning
-                      textStyle={{ color: '#87838B', position: 'relative' }}
+                      textStyle={{ color: '#87838B' }}
                       onPress={() =>
                         handlerPress({ url, title, abstract, multimedia: [{ url: multimedia[0].url }, null, { url: multimedia[2].url }] })
                       }
                     >
                       <Text>Add this article for users</Text>
-                      {load && <ActivityIndicator style={{ position: 'absolute', left: '50%' }} color={'black'} />}
                     </Button>
                   </Left>
                 </CardItem>
@@ -106,4 +105,4 @@ const APIArticles = ({ history }) => {
   )
 }
 
-export default withRouter(APIArticles)
+export default withRouter(TopArticles)

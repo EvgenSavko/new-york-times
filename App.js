@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
-import * as Font from 'expo-font'
+
 import { NativeRouter, Route, Link } from 'react-router-native'
-import { Ionicons } from '@expo/vector-icons'
 
 import Loading from './screens/Loading'
 import SignUp from './screens/SignUp'
@@ -12,44 +11,27 @@ import Home from './screens/Home'
 import { AppProvider } from './context/AppContext'
 
 import { api } from './lib/api'
-import { articlesDB } from './lib/firebase'
 import './lib/firebase'
 
 // import app from 'firebase/app'
 
 function App() {
-  const [isReady, setIsReady] = useState(false)
   const [articles, setArticles] = useState([])
-  const [articlesAPI, setArticlesAPI] = useState([])
   const [category, setCategory] = useState('arts')
 
-  useEffect(() => {
-    Font.loadAsync({
-      Roboto: require('native-base/Fonts/Roboto.ttf'),
-      Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-      ...Ionicons.font,
-    }).then(() => setIsReady(true))
-  }, [])
-
-  const onReguestArticlesAPI = () => api(category.toLocaleLowerCase()).then(data => setArticlesAPI(data.results))
-
-  const onReguestArticles = () =>
-    articlesDB
-      .doc('selected')
-      .get()
-      .then(data => setArticles(data.data().articles))
+  const onReguestArticles = () => api(category.toLocaleLowerCase()).then(data => setArticles(data.results))
 
   const onChangeCategory = value => {
     setCategory(value)
-    setArticlesAPI([])
-    api(value.toLocaleLowerCase()).then(data => setArticlesAPI(data.results))
+    setArticles([])
+    api(value.toLocaleLowerCase()).then(data => setArticles(data.results))
   }
 
   // app.auth().signOut()
-  if (!isReady) return null
+
   return (
     <NativeRouter>
-      <AppProvider value={{ articles, articlesAPI, onReguestArticles, onReguestArticlesAPI, onChangeCategory }}>
+      <AppProvider value={{ articles, onReguestArticles, onChangeCategory }}>
         <>
           <View style={styles.nav}>
             {/* <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>
