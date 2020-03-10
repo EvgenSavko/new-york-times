@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { StyleSheet, View, Button, Text, ScrollView, } from 'react-native'
-import { Container } from 'native-base'
-
+import { Container, Picker, Form } from 'native-base'
 import { withRouter, Route } from 'react-router-native'
 import { Header } from '../modules'
 import Main from './Main'
@@ -61,36 +60,42 @@ function Home({ history }) {
     <Container>
       <Drawer ref={drawerRef} currentUser={state.currentUser}>
         <Header handleOpenDrawer={handleOpenDrawer} history={history} currentUser={state.currentUser} />
-        <View style={styles.select}>
-          {(history.location.pathname.indexOf('home') !== -1 || history.location.pathname.indexOf('api_articles') !== -1) &&
-            state.currentUser.role === 'admin' && (
-              <>
-                <Text>Select category: </Text>
-                <Form>
-                  <Picker
-                    mode="dropdown"
-                    placeholder="Select One"
-                    placeholderStyle={{ color: '#2874F0' }}
-                    textStyle={{ color: '#2874F0', fontWeight: '500' }}
-                    note={false}
-                    selectedValue={selected}
-                    onValueChange={onValueChange}
-                  >
-                    <Picker.Item label="Arts" value="Arts" />
-                    <Picker.Item label="Home" value="Home" />
-                    <Picker.Item label="Science" value="Science" />
-                    <Picker.Item label="Us" value="Us" />
-                    <Picker.Item label="World" value="World" />
-                  </Picker>
-                </Form>
-              </>
-            )}
-        </View>
-        <Route path="/main/home" component={Main} />
-        <Route path="/main/read" component={Read} />
-        <Route path="/main/api_articles" component={APIArticles} />
-        <Route path="/main/review" component={Review} />
-        <Route path="/main/profile" component={Profile} />
+        {
+          state.currentUser && (
+            <>
+              <View style={styles.select}>
+                {(history.location.pathname.indexOf('home') !== -1 || history.location.pathname.indexOf('api_articles') !== -1) &&
+                state.currentUser.role === 'admin' && (
+                  <>
+                    <Text>Select category: </Text>
+                    <Form>
+                      <Picker
+                        mode="dropdown"
+                        placeholder="Select One"
+                        placeholderStyle={{ color: '#2874F0' }}
+                        textStyle={{ color: '#2874F0', fontWeight: '500' }}
+                        note={false}
+                        selectedValue={selected}
+                        onValueChange={onValueChange}
+                      >
+                        <Picker.Item label="Arts" value="Arts" />
+                        <Picker.Item label="Home" value="Home" />
+                        <Picker.Item label="Science" value="Science" />
+                        <Picker.Item label="Us" value="Us" />
+                        <Picker.Item label="World" value="World" />
+                      </Picker>
+                    </Form>
+                  </>
+                )}
+              </View>
+              <Route path="/main/home" component={Main} />
+              <Route path="/main/read" component={Read} />
+              <Route path="/main/api_articles" component={APIArticles} />
+              <Route path="/main/review" component={Review} />
+              <Route path="/main/profile" component={Profile} />
+            </>
+          )
+        }
       </Drawer>
       {/*{state.currentUser && (*/}
       {/*<>*/}
@@ -182,36 +187,24 @@ function Home({ history }) {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    height: 60,
-    backgroundColor: 'olive',
-    // justifyContent: 'flex-start',
-    // alignItems: 'flex-end',
-  },
   title: {
     fontSize: 15,
     fontWeight: '600',
     marginBottom: 5,
   },
-  // container: {
-  //   flex: 1,
-  //   alignItems: 'center',
-  // },
   control: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    // paddingBottom: 15,
   },
   select: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 30,
-    // borderWidth: 1,
-    // borderBottomColor: 'red',
-    // marginBottom: 15,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    height: 100,
+    width: '100%',
+    // backgroundColor: 'red'
   },
 })
 
