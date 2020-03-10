@@ -33,7 +33,7 @@ const routesList = [
 ]
 
 const Sidebar = ({ history, handleCloseDrawer, currentUser }) => {
-  console.log('currentUser 1',currentUser)
+  // console.log('currentUser 1',currentUser)
   const [activeRoute, setActiveRoute] = useState(null)
 
   useEffect(() => {
@@ -58,27 +58,27 @@ const Sidebar = ({ history, handleCloseDrawer, currentUser }) => {
       )
   }
 
-  const renderArticlesAPI = () => currentUser && currentUser.role === 'admin' ?
-    (
-        <ListItem
-          selected={activeRoute === 6}
-          onPress={() => {
-            setActiveRoute(6)
-            history.push('/main/api_articles')
-            handleCloseDrawer()
-          }}
-          style={activeRoute === 6 && styles.activeItem}
-        >
-          <Left>
-            <Text style={styles.text}>API articles</Text>
-          </Left>
-          <Right>
-            <MaterialIcons name="forward" size={20} />
-          </Right>
-        </ListItem>
-      ) : null
+  const renderArticlesAPI = () =>
+    currentUser && currentUser.role === 'admin' ? (
+      <ListItem
+        selected={activeRoute === 6}
+        onPress={() => {
+          setActiveRoute(6)
+          history.push('/main/api_articles')
+          handleCloseDrawer()
+        }}
+        style={activeRoute === 6 && styles.activeItem}
+      >
+        <Left>
+          <Text style={styles.text}>API articles</Text>
+        </Left>
+        <Right>
+          <MaterialIcons name="forward" size={20} />
+        </Right>
+      </ListItem>
+    ) : null
 
-  console.log('activeRoute ', activeRoute)
+  // console.log('activeRoute ', activeRoute)
   return (
     <Container style={styles.container}>
       <Content>
