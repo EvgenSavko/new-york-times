@@ -20,7 +20,6 @@
     "react-native-gesture-handler": "^1.5.3",
     "react-native-safe-area-context": "0.6.0",
     "react-native-safe-area-view": "^1.0.0",
-    "react-native-swipe-list-view": "^2.3.0",
     "react-native-swipeable": "^0.6.0",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.1.1",

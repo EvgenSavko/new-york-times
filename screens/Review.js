@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react'
+import { Linking } from 'react-native'
 import { withRouter } from 'react-router-native'
 
-import { Linking, Image, TouchableWithoutFeedback, ActivityIndicator, FlatList } from 'react-native'
-import { Container, Header, Content, SwipeRow, View, Text, Icon, Button } from 'native-base'
+import ArticlesList from '../components/ArticlesList'
 
 import AppContext from '../context/AppContext'
 
@@ -10,42 +10,23 @@ import app from 'firebase/app'
 import { articlesDB } from '../lib/firebase'
 
 const Review = ({ history }) => {
-  const [load, setLoad] = useState(false)
   const valueContext = useContext(AppContext)
   const { articles, onReguestArticles } = valueContext
 
-  const datas = ['Simon Mignolet', 'Nathaniel Clyne', 'Dejan Lovren', 'Mama Sakho', 'Alberto Moreno', 'Emre Can', 'Joe Allen', 'Phil Coutinho']
+  useEffect(() => {
+    articles.length < 1 && onReguestArticles()
+  }, [articles])
 
-  // useEffect(() => {
-  //   articles.length < 1 && onReguestArticles()
-  // }, [articles])
+  const handleDeleteArticle = url => {
+    articlesDB
+      .doc('selected')
+      .update({
+        articles: articles.filter(item => item.url !== url),
+      })
+      .then(() => onReguestArticles())
+  }
 
-  return (
-    <Container>
-      <Header />
-      <Content scrollEnabled={false}>
-        <SwipeRow
-          leftOpenValue={75}
-          rightOpenValue={-75}
-          left={
-            <Button success onPress={() => alert('Add')}>
-              <Icon active name="add" />
-            </Button>
-          }
-          body={
-            <View>
-              <Text>SwipeRow Body Text</Text>
-            </View>
-          }
-          right={
-            <Button danger onPress={() => alert('Trash')}>
-              <Icon active name="trash" />
-            </Button>
-          }
-        />
-      </Content>
-    </Container>
-  )
+  return <ArticlesList read={true} articles={articles} onDelete={handleDeleteArticle} onhandlerPress={({ url }) => Linking.openURL(url)} />
 }
 
 export default withRouter(Review)
