@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, View, Button, Text } from 'react-native'
-import { Picker, Form } from 'native-base'
-
+import React, { useState, useEffect, useContext, useRef } from 'react'
+import { StyleSheet, View, Button, Text, ScrollView, } from 'react-native'
+import { Container, Picker, Form } from 'native-base'
 import { withRouter, Route } from 'react-router-native'
-
+import { Header } from '../modules'
 import Main from './Main'
 import Read from './Read'
 import APIArticles from './APIArticles'
 import Review from './Review'
+import Profile from './Profile'
+import { Drawer } from '../modules'
 
 import AppContext from '../context/AppContext'
 
@@ -47,66 +48,23 @@ function Home({ history }) {
     onChangeCategory(value)
   }
 
+  const drawerRef = useRef(null)
+  const handleOpenDrawer = () => {
+    console.log('dlick')
+    if (drawerRef.current) {
+      drawerRef.current._root.open()
+    }
+  }
+
   return (
-    <>
-      <View style={styles.header}>
-        <Button title="Log out" onPress={logOutHandler} />
-      </View>
-      {state.currentUser && (
-        <>
-          <View style={styles.container}>
-            <View style={styles.control}>
-              {history.location.pathname.indexOf('home') !== -1 && (
-                <>
-                  <Text style={styles.title}>
-                    Hello,
-                    <Text style={{ fontStyle: 'italic' }}>
-                      {state.currentUser.email}({state.currentUser.role})
-                    </Text>
-                    !
-                  </Text>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Button title="Top articles" disabled />
-                    <Button title="Read articles " onPress={() => history.push('/main/read')} />
-                    {state.currentUser.role === 'admin' && <Button title="API Articles" onPress={() => history.push('/main/api_articles')} />}
-                  </View>
-                </>
-              )}
-              {history.location.pathname.indexOf('read') !== -1 && (
-                <>
-                  <Text style={styles.title}>My read articles !</Text>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Button title="Top articles" onPress={() => history.push('/main/home')} />
-                    <Button title="Read articles " disabled />
-                    {state.currentUser.role === 'admin' && <Button title="API Articles" onPress={() => history.push('/main/api_articles')} />}
-                  </View>
-                </>
-              )}
-              {history.location.pathname.indexOf('api_articles') !== -1 && (
-                <>
-                  <Text style={styles.title}>Select articles for all users</Text>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Button title="Top articles" onPress={() => history.push('/main/home')} />
-                    <Button title="Read articles " onPress={() => history.push('/main/read')} />
-                    {state.currentUser.role === 'admin' && <Button title="API Articles" disabled />}
-                    {state.currentUser.role === 'admin' && <Button title="Review" onPress={() => history.push('/main/review')} />}
-                  </View>
-                </>
-              )}
-              {history.location.pathname.indexOf('review') !== -1 && (
-                <>
-                  <Text style={styles.title}>Select articles for all users</Text>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Button title="Top articles" onPress={() => history.push('/main/home')} />
-                    <Button title="Read articles " onPress={() => history.push('/main/read')} />
-                    {state.currentUser.role === 'admin' && <Button title="API Articles" onPress={() => history.push('/main/api_articles')} />}
-                    {state.currentUser.role === 'admin' && <Button title="Review" disabled />}
-                  </View>
-                </>
-              )}
-            </View>
-            <View style={styles.select}>
-              {(history.location.pathname.indexOf('home') !== -1 || history.location.pathname.indexOf('api_articles') !== -1) &&
+    <Container>
+      <Drawer ref={drawerRef} currentUser={state.currentUser}>
+        <Header handleOpenDrawer={handleOpenDrawer} history={history} currentUser={state.currentUser} />
+        {
+          state.currentUser && (
+            <>
+              <View style={styles.select}>
+                {(history.location.pathname.indexOf('home') !== -1 || history.location.pathname.indexOf('api_articles') !== -1) &&
                 state.currentUser.role === 'admin' && (
                   <>
                     <Text>Select category: </Text>
@@ -129,47 +87,40 @@ function Home({ history }) {
                     </Form>
                   </>
                 )}
-            </View>
-          </View>
-          <Route path="/main/home" component={Main} />
-          <Route path="/main/read" component={Read} />
-          <Route path="/main/api_articles" component={APIArticles} />
-          <Route path="/main/review" component={Review} />
-        </>
-      )}
-    </>
+              </View>
+              <Route path="/main/home" component={Main} />
+              <Route path="/main/read" component={Read} />
+              <Route path="/main/api_articles" component={APIArticles} />
+              <Route path="/main/review" component={Review} />
+              <Route path="/main/profile" component={Profile} />
+            </>
+          )
+        }
+      </Drawer>
+    </Container>
   )
 }
 
 const styles = StyleSheet.create({
-  header: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
-  },
   title: {
     fontSize: 15,
     fontWeight: '600',
     marginBottom: 5,
   },
-  // container: {
-  //   flex: 1,
-  //   alignItems: 'center',
-  // },
   control: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    // paddingBottom: 15,
   },
   select: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 30,
-    // borderWidth: 1,
-    // borderBottomColor: 'red',
-    // marginBottom: 15,
+    // display: 'flex',
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    padding: 10,
+    height: 100,
+    // width: '100%',
+    // backgroundColor: 'red'
   },
 })
 
