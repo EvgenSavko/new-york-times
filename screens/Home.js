@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
-import { StyleSheet, View, Button, Text, ScrollView } from 'react-native'
+import { StyleSheet, View, Button, Text, ScrollView, } from 'react-native'
 import { Container } from 'native-base'
 
 import { withRouter, Route } from 'react-router-native'
@@ -59,8 +59,33 @@ function Home({ history }) {
 
   return (
     <Container>
-      <Header handleOpenDrawer={handleOpenDrawer} history={history} />
       <Drawer ref={drawerRef} currentUser={state.currentUser}>
+        <Header handleOpenDrawer={handleOpenDrawer} history={history} currentUser={state.currentUser} />
+        <View style={styles.select}>
+          {(history.location.pathname.indexOf('home') !== -1 || history.location.pathname.indexOf('api_articles') !== -1) &&
+            state.currentUser.role === 'admin' && (
+              <>
+                <Text>Select category: </Text>
+                <Form>
+                  <Picker
+                    mode="dropdown"
+                    placeholder="Select One"
+                    placeholderStyle={{ color: '#2874F0' }}
+                    textStyle={{ color: '#2874F0', fontWeight: '500' }}
+                    note={false}
+                    selectedValue={selected}
+                    onValueChange={onValueChange}
+                  >
+                    <Picker.Item label="Arts" value="Arts" />
+                    <Picker.Item label="Home" value="Home" />
+                    <Picker.Item label="Science" value="Science" />
+                    <Picker.Item label="Us" value="Us" />
+                    <Picker.Item label="World" value="World" />
+                  </Picker>
+                </Form>
+              </>
+            )}
+        </View>
         <Route path="/main/home" component={Main} />
         <Route path="/main/read" component={Read} />
         <Route path="/main/api_articles" component={APIArticles} />

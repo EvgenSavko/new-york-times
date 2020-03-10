@@ -7,6 +7,7 @@ import { Body, Button, Header as HeaderNativeBase, Icon, Left, Right, Title, Tex
 const Header = ({
   history,
   handleOpenDrawer,
+  currentUser,
 }) => {
   return (
     <>
@@ -17,7 +18,7 @@ const Header = ({
           </Button>
         </Left>
         <Body>
-          <Title>New York Times</Title>
+          <Title>[{currentUser && currentUser.role.toUpperCase()}] New York Times</Title>
         </Body>
         <Right>
           <Button transparent>
