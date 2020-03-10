@@ -12,7 +12,7 @@ const Login = ({ history }) => {
     signIn(state.email, state.password)
       .then(() => history.push('/main/home'))
       .catch(error => setState({ ...state, errorMessage: error.message }))
-    console.log('handleLogin', state)
+    // console.log('handleLogin', state)
   }
 
   return (
