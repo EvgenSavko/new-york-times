@@ -55,7 +55,6 @@ function Home({ history }) {
       drawerRef.current._root.open()
     }
   }
-
   return (
     <Container>
       <Drawer ref={drawerRef} currentUser={state.currentUser}>

@@ -7,7 +7,7 @@ import { signUp, usersDB } from '../lib/firebase'
 const SignUp = ({ history }) => {
   const [state, setState] = useState({ email: '', password: '', errorMessage: null })
 
-  handleSignUp = () => {
+ const handleSignUp = () => {
     // TODO: Firebase stuff...
     signUp(state.email, state.password)
       .then(data => {
