@@ -18,7 +18,9 @@ const Header = ({
           </Button>
         </Left>
         <Body>
-          <Title>[{currentUser && currentUser.role.toUpperCase()}] New York Times</Title>
+          <Title style={styles.title}>
+            [{currentUser && currentUser.role && currentUser.role.toUpperCase()}]</Title>
+          <Title style={styles.title}>New York Times</Title>
         </Body>
         <Right>
           <Button transparent>
@@ -36,6 +38,9 @@ const styles = StyleSheet.create({
     backgroundColor: primary,
     // zIndex: 1000,
   },
+  title: {
+    minWidth: 200,
+  }
 })
 
 export default Header

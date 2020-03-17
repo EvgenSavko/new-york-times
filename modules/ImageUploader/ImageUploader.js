@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Image, View, StyleSheet, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, TouchableWithoutFeedback } from 'react-native'
-import { Text, Container, Content } from 'native-base'
+import {
+  Image,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native'
+import { Text, Container, Content, Button } from 'native-base'
 import * as ImagePicker from 'expo-image-picker'
 import Constants from 'expo-constants'
 import * as Permissions from 'expo-permissions'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-const ImageUploader = () => {
-  const [image, setImage] = useState(null)
+
+const ImageUploader = ({ image, handleChangeImage }) => {
 
   const _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -15,11 +20,8 @@ const ImageUploader = () => {
       aspect: [4, 3],
       quality: 1,
     })
-
-    console.log(result)
-
     if (!result.cancelled) {
-      setImage(result.uri)
+      handleChangeImage(result.uri)
     }
   }
 
@@ -38,35 +40,33 @@ const ImageUploader = () => {
 
   const renderImage = () => {
     if (image) {
-      return (
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-      )
+      return <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
     }
-    return (
-        <MaterialIcons style={styles.image} size={40} name="file-upload" color={'black'} />
-    )
+    return <MaterialIcons style={styles.image} size={40} name="file-upload" color={'black'} />
   }
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Container style={styles.container}>
-         <TouchableHighlight style={styles.title} onPress={_pickImage}>
-           <>
+        <TouchableOpacity style={styles.title} onPress={_pickImage}>
+          <>
             <Text style={styles.text}>Change image</Text>
-             {renderImage()}
-           </>
-          </TouchableHighlight>
+            {renderImage()}
+          </>
+        </TouchableOpacity>
       </Container>
     </View>
   )
 }
-
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  successButton: {
+    marginTop: 20
   },
   image: {
     marginTop: 32,
@@ -77,8 +77,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    marginBottom: 20
-  }
+    marginBottom: 20,
+  },
 })
 
 export default ImageUploader
