@@ -23,8 +23,8 @@ const UserProfile = ({
       .then(user => {
       setUser({
         uid: currentUser.uid,
-        name: user.data().name,
-        image: user.data().image,
+        name: user.data().name || '',
+        image: user.data().image || '',
       })
     })
       .catch(err => {
