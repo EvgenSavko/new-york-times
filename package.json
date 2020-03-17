@@ -10,9 +10,9 @@
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.5",
     "expo": "~36.0.0",
-    "expo-font": "^8.0.0",
+    "expo-font": "8.0.0",
     "firebase": "7.9.0",
-    "native-base": "^2.13.8",
+    "native-base": "2.13.8",
     "prettier": "^1.19.1",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
